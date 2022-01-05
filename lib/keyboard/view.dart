@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'dart:ui' as ui;
 
 import '../api/api.dart';
 import 'layout.dart';
@@ -29,7 +28,8 @@ class KeyboardView extends StatelessWidget {
                 boxKey.currentContext!.findRenderObject() as RenderBox;
             var w = box.getMaxIntrinsicWidth(double.infinity);
             var h = box.getMaxIntrinsicHeight(w);
-            keyboardState.height = (h * ui.window.devicePixelRatio).toInt();
+            // 第一次dpr是一，之后都是2.5
+            keyboardState.height = (h * MediaQuery.of(context).devicePixelRatio).toInt();
           });
 
           return Container(

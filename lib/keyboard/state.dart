@@ -10,7 +10,7 @@ class KeyboardStateApi extends LayoutApi {
   KeyboardStateApi(this.keyboardState);
 
   @override
-  int getHeight() {
+  Future<int> getHeight() async {
     return keyboardState.height;
   }
 }

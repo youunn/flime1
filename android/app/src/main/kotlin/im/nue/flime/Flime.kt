@@ -4,7 +4,7 @@ import android.inputmethodservice.InputMethodService
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.LinearLayout
 import androidx.core.view.updateLayoutParams
 import io.flutter.FlutterInjector
 import io.flutter.embedding.android.FlutterView
@@ -14,7 +14,7 @@ import io.flutter.embedding.engine.dart.DartExecutor
 class Flime : InputMethodService() {
     private lateinit var engine: FlutterEngine
     private lateinit var flutterView: FlutterView
-    private lateinit var rootView: ConstraintLayout
+    private lateinit var rootView: LinearLayout
     private lateinit var layoutApi: Pigeon.LayoutApi
 
     companion object {
@@ -58,35 +58,33 @@ class Flime : InputMethodService() {
 
         flutterView = FlutterView(this)
 
-        rootView = ConstraintLayout(this)
+        rootView = LinearLayout(this)
+
+        flutterView.attachToFlutterEngine(engine)
+        rootView.addView(flutterView)
+        flutterView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0)
+        layoutApi.getHeight {
+            if (it.toInt() == 0) return@getHeight
+            flutterView.updateLayoutParams { height = it.toInt() }
+        }
+
         return rootView
     }
 
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         engine.lifecycleChannel.appIsResumed()
-        flutterView.attachToFlutterEngine(engine)
-        rootView.addView(flutterView)
-        flutterView.layoutParams = ConstraintLayout.LayoutParams(
-            ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
-            ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
-        )
-
-        layoutApi.getHeight {
-            if (it.toInt() == 0) return@getHeight
-            flutterView.updateLayoutParams { height = it.toInt() }
-        }
     }
 
     override fun onFinishInputView(finishingInput: Boolean) {
         super.onFinishInputView(finishingInput)
         engine.lifecycleChannel.appIsPaused()
-        rootView.removeView(flutterView)
-        flutterView.detachFromFlutterEngine()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        rootView.removeView(flutterView)
+        flutterView.detachFromFlutterEngine()
         if (::engine.isInitialized) engine.run {
             serviceControlSurface.detachFromService()
             lifecycleChannel.appIsDetached()

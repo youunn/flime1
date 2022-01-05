@@ -19,5 +19,6 @@ abstract class InputMethodApi {
 
 @FlutterApi()
 abstract class LayoutApi {
+  @async
   int getHeight();
 }

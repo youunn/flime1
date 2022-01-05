@@ -173,7 +173,7 @@ class _LayoutApiCodec extends StandardMessageCodec {
 abstract class LayoutApi {
   static const MessageCodec<Object?> codec = _LayoutApiCodec();
 
-  int getHeight();
+  Future<int> getHeight();
   static void setup(LayoutApi? api, {BinaryMessenger? binaryMessenger}) {
     {
       final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
@@ -183,7 +183,7 @@ abstract class LayoutApi {
       } else {
         channel.setMessageHandler((Object? message) async {
           // ignore message
-          final int output = api.getHeight();
+          final int output = await api.getHeight();
           return output;
         });
       }
