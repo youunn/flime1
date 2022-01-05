@@ -3,10 +3,10 @@ import 'package:flutter/scheduler.dart';
 
 import '../api/api.dart';
 import 'layout.dart';
-import 'state.dart';
 
 class KeyboardView extends StatelessWidget {
-  const KeyboardView({Key? key}) : super(key: key);
+  KeyboardView({Key? key}) : super(key: key);
+  final layoutApi = LayoutApi();
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +20,13 @@ class KeyboardView extends StatelessWidget {
         builder: (context, constraints) {
           var boxKey = GlobalKey();
 
-          var keyboardState = KeyboardState();
-          LayoutApi.setup(KeyboardStateApi(keyboardState));
-
           SchedulerBinding.instance!.addPostFrameCallback((_) {
             RenderBox box =
                 boxKey.currentContext!.findRenderObject() as RenderBox;
             var w = box.getMaxIntrinsicWidth(double.infinity);
             var h = box.getMaxIntrinsicHeight(w);
-            // 第一次dpr是一，之后都是2.5
-            keyboardState.height = (h * MediaQuery.of(context).devicePixelRatio).toInt();
+            // 第一次dpr是1，之后才正常
+            layoutApi.setHeight((h * MediaQuery.of(context).devicePixelRatio).toInt());
           });
 
           return Container(

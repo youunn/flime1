@@ -3,9 +3,9 @@ package im.nue.flime
 import android.inputmethodservice.InputMethodService
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
-import androidx.core.view.updateLayoutParams
 import io.flutter.FlutterInjector
 import io.flutter.embedding.android.FlutterView
 import io.flutter.embedding.engine.FlutterEngine
@@ -15,7 +15,6 @@ class Flime : InputMethodService() {
     private lateinit var engine: FlutterEngine
     private lateinit var flutterView: FlutterView
     private lateinit var rootView: LinearLayout
-    private lateinit var layoutApi: Pigeon.LayoutApi
 
     companion object {
         const val SHOW_KEYBOARD_ENTRY_POINT = "showKeyboard"
@@ -43,6 +42,8 @@ class Flime : InputMethodService() {
     }
 
     override fun onCreateInputView(): View {
+        rootView = LinearLayout(this)
+
         // TODO: engine group
         engine = FlutterEngine(this)
         engine.dartExecutor.executeDartEntrypoint(
@@ -52,21 +53,12 @@ class Flime : InputMethodService() {
             )
         )
         engine.serviceControlSurface.attachToService(this, null, true)
-
         Pigeon.ContextApi.setup(engine.dartExecutor.binaryMessenger, ContextApi())
-        layoutApi = Pigeon.LayoutApi(engine.dartExecutor.binaryMessenger)
 
-        flutterView = FlutterView(this)
-
-        rootView = LinearLayout(this)
-
+        flutterView = WrapFlutterView(engine, this)
         flutterView.attachToFlutterEngine(engine)
         rootView.addView(flutterView)
-        flutterView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0)
-        layoutApi.getHeight {
-            if (it.toInt() == 0) return@getHeight
-            flutterView.updateLayoutParams { height = it.toInt() }
-        }
+        flutterView.layoutParams = ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, 0)
 
         return rootView
     }

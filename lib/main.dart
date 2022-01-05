@@ -6,4 +6,4 @@ import 'keyboard/view.dart';
 void main() => runApp(const MyApp());
 
 @pragma('vm:entry-point')
-void showKeyboard() => runApp(const KeyboardView());
+void showKeyboard() => runApp(KeyboardView());

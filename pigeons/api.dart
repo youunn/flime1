@@ -17,8 +17,7 @@ abstract class InputMethodApi {
 }
 
 
-@FlutterApi()
+@HostApi()
 abstract class LayoutApi {
-  @async
-  int getHeight();
+  void setHeight(int height);
 }
