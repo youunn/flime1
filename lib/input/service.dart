@@ -69,7 +69,7 @@ class Service {
 
 class _Context {
   String composition = '';
-  List<String> candidates = List.empty(growable: true);
+  List<String> candidates = [];
 }
 
 class _Status {
