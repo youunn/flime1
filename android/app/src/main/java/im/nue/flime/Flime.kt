@@ -3,7 +3,6 @@ package im.nue.flime
 import android.inputmethodservice.InputMethodService
 import android.text.TextUtils
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import io.flutter.FlutterInjector
@@ -58,7 +57,7 @@ class Flime : InputMethodService() {
         flutterView = WrapFlutterView(engine, this)
         flutterView.attachToFlutterEngine(engine)
         rootView.addView(flutterView)
-        flutterView.layoutParams = ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, 0)
+        flutterView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0)
 
         return rootView
     }
