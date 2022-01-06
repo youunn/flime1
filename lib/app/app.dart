@@ -1,6 +1,5 @@
+import 'package:flime/api/api.dart';
 import 'package:flutter/material.dart';
-
-import '../api/api.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
