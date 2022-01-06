@@ -5,6 +5,13 @@ class InputPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('input');
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Input test'),
+      ),
+      body: const Center(
+        child: Text('input'),
+      ),
+    );
   }
 }

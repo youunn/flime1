@@ -7,9 +7,11 @@ class SetupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(color: Colors.white),
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Setup'),
+      ),
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const Card(
