@@ -6,7 +6,7 @@ import 'package:flime/app/pages/setup_page.dart';
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
-    AutoRoute(page: HomePage, path: '/', initial: true),
+    AutoRoute(page: HomePage, path: '/'),
     AutoRoute(page: SetupPage, path: '/setup'),
     AutoRoute(page: InputPage, path: '/input'),
   ],
