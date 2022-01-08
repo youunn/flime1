@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flime/api/api.dart';
+import 'package:flime/keyboard/basic/event.dart';
 import 'package:flime/keyboard/basic/preset.dart';
 import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 Widget buildFromPreset(BuildContext context, Preset preset) {
   final contextApi = ContextApi();
@@ -20,14 +22,21 @@ Widget buildFromPreset(BuildContext context, Preset preset) {
                     width: width * k.width,
                     child: InkWell(
                       onTap: () {
-                        if (k.special == Special.backspace) {
-                          contextApi.delete();
-                        } else if (k.special == Special.enter) {
-                          context.router.replace(const SecondaryRoute());
-                        } else {
-                          var content = Content();
-                          content.text = k.click;
-                          contextApi.commit(content);
+                        // 事件处理青春版
+                        if (k.click.type == EventType.click) {
+                          if (k.click.click == LogicalKeyboardKey.backspace) {
+                            contextApi.delete();
+                          } else if (k.click.click ==
+                              LogicalKeyboardKey.enter) {
+                            context.router.replace(const SecondaryRoute());
+                          } else if (k.click.click.keyId >=
+                                  LogicalKeyboardKey.exclamation.keyId &&
+                              k.click.click.keyId <=
+                                  LogicalKeyboardKey.tilde.keyId) {
+                            var content = Content();
+                            content.text = k.click.click.keyLabel;
+                            contextApi.commit(content);
+                          }
                         }
                       },
                       child: Center(

@@ -27,7 +27,9 @@ class PresetBuilder extends StatelessWidget {
 
         return Container(
           key: boxKey,
-          child: child,
+          child: SingleChildScrollView(
+            child: child,
+          ),
         );
       },
     );

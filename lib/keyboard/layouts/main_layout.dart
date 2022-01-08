@@ -12,7 +12,9 @@ class MainLayout extends StatelessWidget {
       builder: (context, constraint, child) {
         return SizedBox(
           height: constraint.height,
-          child: child,
+          child: SizedBox.expand(
+            child: child,
+          ),
         );
       },
       child: const AutoRouter(),

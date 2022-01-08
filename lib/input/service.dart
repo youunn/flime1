@@ -69,7 +69,7 @@ class Service {
 
 class _Context {
   String composition = '';
-  List<String> candidates = [];
+  var candidates = <String>[];
 }
 
 class _Status {

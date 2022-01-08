@@ -14,17 +14,20 @@ class HomePage extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            title: const Text('setup'),
+            title: const Text('Input Tools'),
+            onTap: () {
+              context.router.push(const InputRoute());
+            },
+          ),
+          ListTile(
+            title: const Text('Setup'),
             onTap: () {
               context.router.push(SetupRoute());
             },
           ),
-          ListTile(
-            title: const Text('input'),
-            onTap: () {
-              context.router.push(const InputRoute());
-            },
-          )
+          const ListTile(
+            title: Text('About'),
+          ),
         ],
       ),
     );

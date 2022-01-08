@@ -1,7 +1,12 @@
+import 'package:flime/keyboard/basic/event.dart';
+import 'package:flutter/services.dart';
+
+import 'key.dart';
+
 class Preset extends Iterable<KeyboardRow> {
-  List<KeyboardRow> rows = [];
-  double width;
-  double height;
+  final double width;
+  final double height;
+  final rows = <KeyboardRow>[];
 
   Preset({
     required this.width,
@@ -21,64 +26,52 @@ class Preset extends Iterable<KeyboardRow> {
   }) {
     var row = KeyboardRow(
       height: height ?? this.height,
-      width: width,
+      preset: this,
     );
     rows.add(init(row));
   }
 }
 
-class KeyboardRow extends Iterable<KeyboardKey> {
-  double height;
-  double width;
-  List<KeyboardKey> keys = [];
+class KeyboardRow extends Iterable<K> {
+  final double height;
+  final Preset preset;
+  final keys = <K>[];
 
-  KeyboardRow({required this.height, required this.width})
-      : assert(height >= 0),
-        assert(width >= 0 && width <= 1);
+  KeyboardRow({required this.height, required this.preset})
+      : assert(height >= 0);
 
   @override
-  Iterator<KeyboardKey> get iterator => keys.iterator;
+  Iterator<K> get iterator => keys.iterator;
 
   void k(
-    String label, {
-    String click = '',
+    KEvent click, {
+    String? label,
     double? width,
     double? height,
-    Special special = Special.text,
   }) {
-    if (click == '') click = label;
-    var key = KeyboardKey(
-        label: label,
-        click: click,
-        height: height ?? this.height,
-        width: width ?? this.width,
-        special: special);
+    var key = K(
+      height: height ?? this.height,
+      width: width ?? preset.width,
+      preset: preset,
+      click: click,
+      label: label,
+    );
+    keys.add(key);
+  }
+
+  void c(
+    LogicalKeyboardKey click, {
+    String? label,
+    double? width,
+    double? height,
+  }) {
+    var key = K(
+      height: height ?? this.height,
+      width: width ?? preset.width,
+      preset: preset,
+      click: KEvent.click(click),
+      label: label,
+    );
     keys.add(key);
   }
 }
-
-class KeyboardKey {
-  /// 高，单位dpr。
-  double height;
-
-  /// 宽，单位是屏占比。
-  double width;
-
-  /// 点击事件。
-  String click;
-
-  String label;
-
-  Special special;
-
-  KeyboardKey({
-    required this.label,
-    required this.click,
-    required this.height,
-    required this.width,
-    this.special = Special.text,
-  })  : assert(width >= 0 && width <= 1),
-        assert(height >= 0);
-}
-
-enum Special { text, backspace, enter }
