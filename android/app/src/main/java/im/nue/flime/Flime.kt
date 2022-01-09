@@ -1,7 +1,7 @@
 package im.nue.flime
 
 import android.inputmethodservice.InputMethodService
-import android.text.TextUtils
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
@@ -28,14 +28,13 @@ class Flime : InputMethodService() {
             return content != null
         }
 
+        override fun enter(): Boolean {
+            this@Flime.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+            return true
+        }
+
         override fun delete(): Boolean {
-            val ic = this@Flime.currentInputConnection
-            val selectedText = ic.getSelectedText(0) ?: ""
-            if (TextUtils.isEmpty(selectedText)) {
-                ic.deleteSurroundingText(1, 0)
-            } else {
-                ic.commitText("", 1)
-            }
+            this@Flime.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
             return true
         }
     }
@@ -83,4 +82,7 @@ class Flime : InputMethodService() {
         }
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return super.onKeyDown(keyCode, event)
+    }
 }

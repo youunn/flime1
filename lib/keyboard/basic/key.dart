@@ -34,7 +34,3 @@ class K {
     this.label = label ?? click.parseLabel();
   }
 }
-
-class KeyAttributes {
-  // 之后再说
-}

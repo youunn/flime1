@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flime/api/api.dart';
 import 'package:flutter/material.dart';
 
 class SetupPage extends StatelessWidget {
   SetupPage({Key? key}) : super(key: key);
-  final inputMethodApi = InputMethodApi();
+
+  final InputMethodApi? inputMethodApi =
+      Platform.isAndroid ? InputMethodApi() : null;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,9 @@ class SetupPage extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                inputMethodApi.enable();
+                if (Platform.isAndroid) {
+                  inputMethodApi?.enable();
+                }
               },
               child: const Text('Enable'),
             ),
@@ -35,7 +41,9 @@ class SetupPage extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                inputMethodApi.pick();
+                if (Platform.isAndroid) {
+                  inputMethodApi?.pick();
+                }
               },
               child: const Text('Switch'),
             ),

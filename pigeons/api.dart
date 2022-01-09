@@ -8,6 +8,7 @@ class Content {
 abstract class ContextApi {
   bool commit(Content content);
   bool delete();
+  bool enter();
 }
 
 @HostApi()

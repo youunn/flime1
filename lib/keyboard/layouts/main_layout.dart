@@ -10,11 +10,10 @@ class MainLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<Constraint>(
       builder: (context, constraint, child) {
+        // TODO: fix not shown if not reload
         return SizedBox(
           height: constraint.height,
-          child: SizedBox.expand(
-            child: child,
-          ),
+          child: child,
         );
       },
       child: const AutoRouter(),
