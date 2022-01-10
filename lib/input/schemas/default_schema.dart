@@ -6,6 +6,7 @@ import 'package:flime/input/schemas/processors/pre/normal.dart';
 import 'package:flime/input/schemas/processors/trans/default_table.dart';
 
 class Schemas extends Schema {
+  // static 太多了
   static final defaultSchema = Schema(
     preFilters: [
       Editor(_engine),

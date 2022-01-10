@@ -1,17 +1,53 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flime/api/api.dart';
+import 'package:flime/input/schemas/default_schema.dart';
+import 'package:flime/input/service.dart';
+import 'package:flime/keyboard/api/apis.dart';
 import 'package:flime/keyboard/basic/event.dart';
+import 'package:flime/keyboard/basic/event_extension.dart';
 import 'package:flime/keyboard/basic/preset.dart';
 import 'package:flime/keyboard/layouts/widgets.dart';
+import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flime/keyboard/widgets/preset_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class PrimaryLayout extends StatelessWidget {
-  const PrimaryLayout({Key? key}) : super(key: key);
+  final service = Service()..engine.schema = Schemas.defaultSchema;
+  final contextApi = Apis.contextApi;
+
+  PrimaryLayout({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PresetBuilder(
-      child: buildFromPreset(context, PrimaryPreset.preset),
+      child: buildFromPreset(
+        context,
+        PrimaryPreset.preset,
+        onKey: (KEvent event) async {
+          if (event.type == EventType.click) {
+            if (await service.onKey(event)) {
+              if (service.commitText != '') {
+                contextApi.commit(Content()..text = service.popCommitText());
+              }
+            } else {
+              if (event.click.isBackspace) {
+                contextApi.delete();
+              } else if (event.click.isEnter) {
+                contextApi.enter();
+              } else if (event.click.keyId >=
+                      LogicalKeyboardKey.exclamation.keyId &&
+                  event.click.keyId <= LogicalKeyboardKey.tilde.keyId) {
+                var content = Content();
+                content.text = event.click.keyLabel;
+                contextApi.commit(content);
+              }
+            }
+          } else if (event.type == EventType.command) {
+            context.router.replace(const SecondaryRoute());
+          }
+        },
+      ),
     );
   }
 }
@@ -22,7 +58,7 @@ typedef Lk = LogicalKeyboardKey;
 class PrimaryPreset {
   static final preset = Preset(
     width: 0.1,
-    height: 38,
+    height: 76,
   )
     // 第一行
     ..r((r) => r
@@ -70,6 +106,6 @@ class PrimaryPreset {
         ..c(Lk.space, width: 0.34)
         ..c(Lk.period, width: 0.14)
         ..c(Lk.enter, width: 0.16),
-      height: 46,
+      height: 92,
     );
 }

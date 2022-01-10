@@ -7,6 +7,8 @@ class Schema {
   final List<Translator> translators;
   final List<PostFilter> postFilters;
 
+  // TODO: options
+
   Schema({
     this.preFilters = const [],
     this.translators = const [],

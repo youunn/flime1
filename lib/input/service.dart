@@ -1,6 +1,8 @@
 import 'package:flime/input/core/engine.dart';
+import 'package:flime/input/schemas/default_schema.dart';
 import 'package:flime/keyboard/basic/event.dart';
 
+// TODO: 加一个ChangeNotifier
 class Service {
   static Service? _service;
 
@@ -9,6 +11,7 @@ class Service {
   Service._init()
       : _engine = Engine(),
         _commitText = '' {
+    Schemas.engine = _engine;
     _engine.onCommit = _commit;
   }
 
@@ -17,6 +20,7 @@ class Service {
   String _commitText;
 
   void destroy() {
+    // 有个DI就完美了
     _service = null;
   }
 
@@ -35,4 +39,6 @@ class Service {
   void _commit(String text) {
     _commitText += text;
   }
+
+  List<String> get candidates => _engine.context.candidates;
 }

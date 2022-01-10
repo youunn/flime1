@@ -29,7 +29,7 @@ class KeyboardRouter extends _i4.RootStackRouter {
     },
     PrimaryRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.PrimaryLayout());
+          routeData: routeData, child: _i2.PrimaryLayout());
     },
     SecondaryRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(

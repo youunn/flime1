@@ -2,7 +2,7 @@ import 'package:flime/api/api.dart';
 import 'package:flutter/cupertino.dart';
 
 class Constraint extends ChangeNotifier {
-  double _baseHeight = 0;
+  double _baseHeight = 38;
 
   double _height = 192;
 

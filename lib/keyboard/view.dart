@@ -1,4 +1,4 @@
-import 'package:flime/keyboard/providers/constraint.dart';
+import 'package:flime/keyboard/models/constraint.dart';
 import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

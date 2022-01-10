@@ -26,16 +26,8 @@ class InputColumn extends StatefulWidget {
 }
 
 class _InputColumnState extends State<InputColumn> {
-  late Service service;
+  final Service service = Service()..engine.schema = Schemas.defaultSchema;
   String text = '依次按f，w，v，q，再依次点两个按钮测试';
-
-  @override
-  void initState() {
-    super.initState();
-    service = Service();
-    Schemas.engine = service.engine;
-    service.engine.schema = Schemas.defaultSchema;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +55,8 @@ class _InputColumnState extends State<InputColumn> {
           width: double.infinity,
           child: TextButton(
             onPressed: () async {
-              if(!(await service.onKey(KEvent.click(LogicalKeyboardKey.space)))) {
+              if (!(await service
+                  .onKey(KEvent.click(LogicalKeyboardKey.space)))) {
                 // TODO: send space directly
               }
             },
