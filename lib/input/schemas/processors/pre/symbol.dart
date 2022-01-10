@@ -6,7 +6,7 @@ class SymbolFilter extends PreFilter {
   SymbolFilter(Engine engine) : super(engine);
 
   @override
-  Future<bool> process(KEvent event) async {
+  Future<preFilterResult> process(KEvent event) async {
     throw UnimplementedError();
   }
 }

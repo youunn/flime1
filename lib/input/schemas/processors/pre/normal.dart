@@ -7,27 +7,27 @@ class NormalFilter extends PreFilter {
   NormalFilter(Engine engine) : super(engine);
 
   @override
-  Future<bool> process(KEvent event) async {
+  Future<preFilterResult> process(KEvent event) async {
     if (event.click.isAlphabet) {
-      if (engine.context.candidates.isNotEmpty) {
+      if (engine.context.hasCandidates) {
         var previousInput = engine.context.input;
         var input = event.click.keyLabel.toLowerCase();
         await engine.context.pushInput(input);
 
-        if (engine.context.candidates.isEmpty) {
+        if (!engine.context.hasCandidates) {
           await engine.context.setInput(previousInput);
           engine.context.commitCurrent();
           await engine.context.setInput(input);
-        } else if (engine.context.candidates.length == 1) {
+        } else if (engine.context.hasSingleCandidate) {
           engine.context.commitCurrent();
         }
       } else {
         var input = event.click.keyLabel.toLowerCase();
         await engine.context.pushInput(input);
       }
+      return preFilterResult.finish;
     }
 
-    return true;
+    return preFilterResult.denied;
   }
-
 }

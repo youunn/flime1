@@ -2,7 +2,7 @@ class Context {
   // 有点简陋
   String _input = '';
 
-  var candidates = <String>[];
+  final _candidates = <String>[];
 
   // TODO: 回调换成changeNotifier
   late Future Function() _onChange;
@@ -25,6 +25,12 @@ class Context {
     _onCommit = value;
   }
 
+  List<String> get candidates => _candidates;
+
+  bool get hasCandidates => _candidates.isNotEmpty;
+
+  bool get hasSingleCandidate => _candidates.length == 1;
+
   Future pushInput(String s) async {
     _input += s;
     await _onChange();
@@ -42,15 +48,16 @@ class Context {
 
   Future clear() async {
     _input = '';
-    candidates.clear();
+    _candidates.clear();
     await _onChange();
   }
 
   bool commit(int index) {
-    if (index < 0 || candidates.length <= index) {
+    if (index < 0 || _candidates.length <= index) {
       return false;
     }
-    _onCommit(candidates[index]);
+    _onCommit(_candidates[index]);
+    clear();
     return true;
   }
 

@@ -9,7 +9,7 @@ class Service {
   Service._init()
       : _engine = Engine(),
         _commitText = '' {
-    _engine.onCommit = commit;
+    _engine.onCommit = _commit;
   }
 
   Engine _engine;
@@ -24,17 +24,15 @@ class Service {
 
   Engine get engine => _engine;
 
-  // 接收按键后，`Engine`监听`Context`的变化，将编码转换为候选字，并对候选字后处理，添加到
-  // `Context`（中间件都不要了）。这一步可能在`Processor`处理按键的过程中进行。
-  Future onKey(KEvent event) => _engine.processKey(event);
-
-  void commit(String text) => _commitText += text;
-
-  void resetCommitText() => _commitText = '';
+  Future<bool> onKey(KEvent event) => _engine.processKey(event);
 
   String popCommitText() {
     var s = _commitText;
-    resetCommitText();
+    _commitText = '';
     return s;
+  }
+
+  void _commit(String text) {
+    _commitText += text;
   }
 }

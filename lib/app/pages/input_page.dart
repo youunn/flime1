@@ -62,8 +62,10 @@ class _InputColumnState extends State<InputColumn> {
         SizedBox(
           width: double.infinity,
           child: TextButton(
-            onPressed: () {
-              service.onKey(KEvent.click(LogicalKeyboardKey.space));
+            onPressed: () async {
+              if(!(await service.onKey(KEvent.click(LogicalKeyboardKey.space)))) {
+                // TODO: send space directly
+              }
             },
             child: const Text('commit'),
           ),

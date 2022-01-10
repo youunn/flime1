@@ -1,3 +1,4 @@
+import 'package:flime/input/core/processors/pre_filter.dart';
 import 'package:flime/keyboard/basic/event.dart';
 
 import 'context.dart';
@@ -31,26 +32,37 @@ class Engine {
     _context.onCommit = commit;
   }
 
-  Future<void> processKey(KEvent event) async {
+  Future<bool> processKey(KEvent event) async {
     for (var preFilter in _schema.preFilters) {
-      if (await preFilter.process(event)) {
-        return;
+      var result = await preFilter.process(event);
+      switch (result) {
+        case preFilterResult.finish:
+          return true;
+        case preFilterResult.denied:
+          return false;
+        case preFilterResult.pass:
+          break;
+      }
+    }
+
+    return false;
+  }
+
+  Future compose() async {
+    if (_context.input.isNotEmpty) {
+      _context.candidates.clear();
+      for (var translator in _schema.translators) {
+        _context.candidates.addAll(await translator.process(_context.input));
+      }
+      for (var postFilter in _schema.postFilters) {
+        var filtered = postFilter.process(_context.candidates);
+        _context.candidates.clear();
+        _context.candidates.addAll(filtered);
       }
     }
   }
 
-  Future compose() async {
-    _context.candidates.clear();
-    for (var translator in _schema.translators) {
-      _context.candidates += await translator.process(_context.input);
-    }
-    for (var postFilter in _schema.postFilters) {
-      postFilter.process(_context.candidates);
-    }
-  }
-
   void commit(String text) {
-    _context.clear();
     _onCommit(text);
   }
 }

@@ -6,5 +6,11 @@ abstract class PreFilter {
 
   PreFilter(this.engine);
 
-  Future<bool> process(KEvent event);
+  Future<preFilterResult> process(KEvent event);
+}
+
+enum preFilterResult {
+  pass,
+  finish,
+  denied,
 }
