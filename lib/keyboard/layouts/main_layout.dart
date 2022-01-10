@@ -10,9 +10,9 @@ class MainLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<Constraint>(
       builder: (context, constraint, child) {
-        // TODO: fix not shown if not reload
-        return SizedBox(
+        return Container(
           height: constraint.height,
+          color: Colors.white,
           child: child,
         );
       },

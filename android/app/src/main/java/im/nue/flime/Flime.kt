@@ -56,7 +56,10 @@ class Flime : InputMethodService() {
         flutterView = WrapFlutterView(engine, this)
         flutterView.attachToFlutterEngine(engine)
         rootView.addView(flutterView)
-        flutterView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0)
+        flutterView.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            192, // any number greater than zero
+        )
 
         return rootView
     }
