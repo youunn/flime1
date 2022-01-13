@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flime/api/api.dart';
-import 'package:flime/input/service.dart';
 import 'package:flime/keyboard/api/apis.dart';
 import 'package:flime/keyboard/basic/event.dart';
 import 'package:flime/keyboard/basic/event_extension.dart';
 import 'package:flime/keyboard/basic/preset.dart';
 import 'package:flime/keyboard/layouts/widgets.dart';
 import 'package:flime/keyboard/router/router.gr.dart';
+import 'package:flime/keyboard/services/input_service.dart';
 import 'package:flime/keyboard/widgets/preset_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +19,7 @@ class PrimaryLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var service = context.read<Service>();
+    var service = context.read<InputService>();
 
     return PresetBuilder(
       child: buildFromPreset(

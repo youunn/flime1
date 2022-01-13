@@ -27,5 +27,6 @@ class Service {
     _commitText += text;
   }
 
+  String get input => _engine.context.input;
   List<String> get candidates => _engine.context.candidates;
 }

@@ -51,6 +51,8 @@ class Engine {
         _context.candidates.clear();
         _context.candidates.addAll(filtered);
       }
+    } else if (_context.candidates.isNotEmpty) {
+      _context.candidates.clear();
     }
   }
 
