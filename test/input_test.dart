@@ -25,11 +25,11 @@ Future main() async {
     });
     test('Engine initialization', () async {
       var service = Service();
-      service.engine.schema = await Schemas.getDefaultSchema();
+      service.engine.schema = await Schemas.getDefaultSchemaAsync();
     });
     test('Basic input', () async {
       var service = Service();
-      service.engine.schema = await Schemas.getDefaultSchema();
+      service.engine.schema = await Schemas.getDefaultSchemaAsync();
       await service.onKey(KEvent.click(LogicalKeyboardKey.keyF));
       await service.onKey(KEvent.click(LogicalKeyboardKey.keyW));
       await service.onKey(KEvent.click(LogicalKeyboardKey.keyV));

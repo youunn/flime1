@@ -7,7 +7,7 @@ import 'package:flime/input/schemas/processors/trans/default_table.dart';
 class Schemas extends Schema {
   static Schema? _defaultSchema;
 
-  static Future<Schema> getDefaultSchema() async =>
+  static Future<Schema> getDefaultSchemaAsync() async =>
       // line break
       _defaultSchema ??= Schema(
         preFilters: [
@@ -15,7 +15,7 @@ class Schemas extends Schema {
           NormalFilter(),
         ],
         translators: [
-          await DefaultTableTranslator.createIfNotExists(),
+          await DefaultTableTranslator.createIfNotExistsAsync(),
         ],
         postFilters: [
           DeDupFilter(),

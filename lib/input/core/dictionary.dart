@@ -3,13 +3,16 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:synchronized/synchronized.dart';
 
 class Dictionary {
   Database? _database;
-  late String tableName;
-  late String codeColumn;
-  late String wordColumn;
-  late String indexColumn;
+  late String _tableName;
+  late String _codeColumn;
+  late String _wordColumn;
+  late String _indexColumn;
+  bool _initialized = false;
+  final _lock = Lock();
 
   Future<void> initFromAssets(
     String path, {
@@ -18,42 +21,48 @@ class Dictionary {
     required String word,
     required String index,
   }) async {
-    var exists = await databaseExists(join((await getDatabasesPath()), path));
-    if (!exists) {
-      if (Platform.isAndroid) {
-        await Directory(dirname(path)).create(recursive: true);
+    await _lock.synchronized(() async {
+      if (!_initialized) {
+        var exists = await databaseExists(
+            join((await getDatabasesPath()), path));
+        if (!exists) {
+          if (Platform.isAndroid) {
+            await Directory(dirname(path)).create(recursive: true);
 
-        ByteData data = await rootBundle.load(join('assets', path));
-        List<int> bytes =
-        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+            ByteData data = await rootBundle.load(join('assets', path));
+            List<int> bytes =
+            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
-        await File(join((await getDatabasesPath()), path))
-            .writeAsBytes(bytes, flush: true);
-      } else {
-        // do nothing yet
+            await File(join((await getDatabasesPath()), path))
+                .writeAsBytes(bytes, flush: true);
+          } else {
+            // do nothing yet
+          }
+        }
+        _tableName = table;
+        _codeColumn = code;
+        _wordColumn = word;
+        _indexColumn = index;
+        _database = await openDatabase(path, readOnly: true);
+        _initialized = true;
       }
-    }
-    tableName = table;
-    codeColumn = code;
-    wordColumn = word;
-    indexColumn = index;
-    _database = await openDatabase(path, readOnly: true);
+    });
   }
 
-  bool get isInitialized => _database != null;
+  bool get initialized => _initialized;
 
   Future<List<Entry>> getList(String code) async {
     var results = (await _database?.query(
-          tableName,
-          columns: [codeColumn, wordColumn, indexColumn],
-          where: '$codeColumn = ?',
+          _tableName,
+          columns: [_codeColumn, _wordColumn, _indexColumn],
+          where: '$_codeColumn = ?',
           whereArgs: [code],
           limit: 100,
         ))
             ?.map((e) => Entry(
-                  code: e[codeColumn] as String,
-                  word: e[wordColumn] as String,
-                  index: e[indexColumn] as int,
+                  code: e[_codeColumn] as String,
+                  word: e[_wordColumn] as String,
+                  index: e[_indexColumn] as int,
                 ))
             .toList() ??
         [];
@@ -62,16 +71,16 @@ class Dictionary {
 
   Future<List<Entry>> getAll(String code, int count) async {
     var results = (await _database?.query(
-          tableName,
-          columns: [codeColumn, wordColumn, indexColumn],
-          where: '$codeColumn like ? || \'%\'',
+          _tableName,
+          columns: [_codeColumn, _wordColumn, _indexColumn],
+          where: '$_codeColumn like ? || \'%\'',
           whereArgs: [code],
           limit: 100,
         ))
             ?.map((e) => Entry(
-                  code: e[codeColumn] as String,
-                  word: e[wordColumn] as String,
-                  index: e[indexColumn] as int,
+                  code: e[_codeColumn] as String,
+                  word: e[_wordColumn] as String,
+                  index: e[_indexColumn] as int,
                 ))
             .toList() ??
         [];

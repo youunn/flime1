@@ -18,7 +18,7 @@ class KeyboardView extends StatelessWidget {
         ),
         Provider<Service>(
           create: (_) =>
-              Service()..engine.setSchemaAsync(Schemas.getDefaultSchema()),
+              Service()..engine.setSchemaAsync(Schemas.getDefaultSchemaAsync()),
         ),
       ],
       child: MaterialApp.router(

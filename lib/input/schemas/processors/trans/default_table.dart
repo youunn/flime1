@@ -11,7 +11,7 @@ class DefaultTableTranslator extends Translator {
   factory DefaultTableTranslator() =>
       _translator ??= DefaultTableTranslator._();
 
-  static Future<DefaultTableTranslator> createIfNotExists() async {
+  static Future<DefaultTableTranslator> createIfNotExistsAsync() async {
     if (_translator == null) {
       _translator = DefaultTableTranslator._();
       await _translator!._dictionary.initFromAssets(
