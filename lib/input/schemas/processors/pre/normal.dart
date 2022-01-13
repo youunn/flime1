@@ -4,10 +4,14 @@ import 'package:flime/keyboard/basic/event.dart';
 import 'package:flime/keyboard/basic/event_extension.dart';
 
 class NormalFilter extends PreFilter {
-  NormalFilter(Engine engine) : super(engine);
+  static NormalFilter? _filter;
+
+  NormalFilter._();
+
+  factory NormalFilter() => _filter ??= NormalFilter._();
 
   @override
-  Future<preFilterResult> process(KEvent event) async {
+  Future<preFilterResult> process(Engine engine, KEvent event) async {
     if (event.click.isAlphabet) {
       if (engine.context.hasCandidates) {
         var previousInput = engine.context.input;

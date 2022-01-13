@@ -1,11 +1,11 @@
 import 'package:flime/api/api.dart';
 
 class Apis {
-  static final ContextApi _contextApi = ContextApi();
+  static ContextApi? _contextApi;
 
-  static ContextApi get contextApi => _contextApi;
+  static ContextApi get contextApi => _contextApi ??= ContextApi();
 
-  static final LayoutApi _layoutApi = LayoutApi();
+  static LayoutApi? _layoutApi;
 
-  static LayoutApi get layoutApi => _layoutApi;
+  static LayoutApi get layoutApi => _layoutApi ??= LayoutApi();
 }

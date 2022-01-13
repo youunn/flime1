@@ -1,10 +1,8 @@
 class Context {
   // 有点简陋
   String _input = '';
-
   final _candidates = <String>[];
 
-  // TODO: 回调换成changeNotifier
   late Future Function() _onChange;
   late void Function(String) _onCommit;
 

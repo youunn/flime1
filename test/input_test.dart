@@ -26,7 +26,6 @@ Future main() async {
     test('Engine initialization', () async {
       var service = Service();
       service.engine.schema = await Schemas.getDefaultSchema();
-      service.destroy();
     });
     test('Basic input', () async {
       var service = Service();
@@ -37,7 +36,6 @@ Future main() async {
       await service.onKey(KEvent.click(LogicalKeyboardKey.keyQ));
       var commitText = service.popCommitText();
       expect(commitText, '测试');
-      service.destroy();
     });
   });
 }

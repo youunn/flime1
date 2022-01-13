@@ -1,3 +1,5 @@
+import 'package:flime/input/schemas/default_schema.dart';
+import 'package:flime/input/service.dart';
 import 'package:flime/keyboard/stores/constraint.dart';
 import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,16 @@ class KeyboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (context) => Constraint()..setupReactions(),
+    return MultiProvider(
+      providers: [
+        Provider<Constraint>(
+          create: (_) => Constraint()..setupReactions(),
+        ),
+        Provider<Service>(
+          create: (_) =>
+              Service()..engine.setSchemaAsync(Schemas.getDefaultSchema()),
+        ),
+      ],
       child: MaterialApp.router(
         routerDelegate: _keyboardRouter.delegate(),
         routeInformationParser: _keyboardRouter.defaultRouteParser(),

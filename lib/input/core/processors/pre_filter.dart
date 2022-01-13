@@ -2,11 +2,7 @@ import 'package:flime/input/core/engine.dart';
 import 'package:flime/keyboard/basic/event.dart';
 
 abstract class PreFilter {
-  Engine engine;
-
-  PreFilter(this.engine);
-
-  Future<preFilterResult> process(KEvent event);
+  Future<preFilterResult> process(Engine engine, KEvent event);
 }
 
 enum preFilterResult {

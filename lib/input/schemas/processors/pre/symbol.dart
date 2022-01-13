@@ -3,10 +3,14 @@ import 'package:flime/input/core/processors/pre_filter.dart';
 import 'package:flime/keyboard/basic/event.dart';
 
 class SymbolFilter extends PreFilter {
-  SymbolFilter(Engine engine) : super(engine);
+  static SymbolFilter? _filter;
+
+  SymbolFilter._();
+
+  factory SymbolFilter() => _filter ??= SymbolFilter._();
 
   @override
-  Future<preFilterResult> process(KEvent event) async {
+  Future<preFilterResult> process(Engine engine, KEvent event) async {
     throw UnimplementedError();
   }
 }

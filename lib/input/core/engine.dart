@@ -5,15 +5,16 @@ import 'context.dart';
 import 'schema.dart';
 
 class Engine {
-  static Engine? _engine;
-
   Schema _schema;
-
-  Context _context;
-
+  final Context _context;
   late void Function(String) _onCommit;
 
-  factory Engine() => _engine ??= Engine._init();
+  Engine()
+      : _schema = Schema(),
+        _context = Context() {
+    _context.onChange = compose;
+    _context.onCommit = commit;
+  }
 
   Context get context => _context;
 
@@ -23,16 +24,9 @@ class Engine {
 
   set onCommit(void Function(String) value) => _onCommit = value;
 
-  Engine._init()
-      : _schema = Schema(),
-        _context = Context() {
-    _context.onChange = compose;
-    _context.onCommit = commit;
-  }
-
   Future<bool> processKey(KEvent event) async {
     for (var preFilter in _schema.preFilters) {
-      var result = await preFilter.process(event);
+      var result = await preFilter.process(this, event);
       switch (result) {
         case preFilterResult.finish:
           return true;

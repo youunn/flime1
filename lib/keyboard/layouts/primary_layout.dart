@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flime/api/api.dart';
-import 'package:flime/input/schemas/default_schema.dart';
 import 'package:flime/input/service.dart';
 import 'package:flime/keyboard/api/apis.dart';
 import 'package:flime/keyboard/basic/event.dart';
@@ -11,15 +10,17 @@ import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flime/keyboard/widgets/preset_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class PrimaryLayout extends StatelessWidget {
-  final service = Service()..engine.setSchemaAsync(Schemas.getDefaultSchema());
   final contextApi = Apis.contextApi;
 
   PrimaryLayout({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var service = context.read<Service>();
+
     return PresetBuilder(
       child: buildFromPreset(
         context,
