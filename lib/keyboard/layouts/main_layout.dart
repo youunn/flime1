@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flime/keyboard/models/constraint.dart';
+import 'package:flime/keyboard/stores/constraint.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 class MainLayout extends StatelessWidget {
@@ -8,31 +9,33 @@ class MainLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Constraint>(
-      builder: (context, constraint, child) {
+    final constraint = context.read<Constraint>();
+    const routerWidget = Expanded(
+      child: AutoRouter(),
+    );
+
+    return Observer(
+      builder: (context) {
         return Container(
           height: constraint.height,
           color: Colors.white,
-          child: child,
+          child: Column(
+            children: [
+              SizedBox(
+                height: constraint.baseHeight,
+                child: const Center(
+                  child: Text(
+                    // TODO: candidates
+                    'Candidates',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                ),
+              ),
+              routerWidget,
+            ],
+          ),
         );
       },
-      child: Column(
-        children: [
-          SizedBox(
-            height: context.read<Constraint>().baseHeight,
-            child: const Center(
-              child: Text(
-                // TODO: candidates
-                'Candidates',
-                style: TextStyle(fontSize: 10),
-              ),
-            ),
-          ),
-          const Expanded(
-            child: AutoRouter(),
-          ),
-        ],
-      ),
     );
   }
 }

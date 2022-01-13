@@ -28,8 +28,10 @@ class KeyboardRouter extends _i4.RootStackRouter {
           routeData: routeData, child: const _i1.MainLayout());
     },
     PrimaryRoute.name: (routeData) {
+      final args = routeData.argsAs<PrimaryRouteArgs>(
+          orElse: () => const PrimaryRouteArgs());
       return _i4.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i2.PrimaryLayout());
+          routeData: routeData, child: _i2.PrimaryLayout(key: args.key));
     },
     SecondaryRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(
@@ -66,10 +68,23 @@ class MainRoute extends _i4.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.PrimaryLayout]
-class PrimaryRoute extends _i4.PageRouteInfo<void> {
-  const PrimaryRoute() : super(PrimaryRoute.name, path: 'primary');
+class PrimaryRoute extends _i4.PageRouteInfo<PrimaryRouteArgs> {
+  PrimaryRoute({_i5.Key? key})
+      : super(PrimaryRoute.name,
+            path: 'primary', args: PrimaryRouteArgs(key: key));
 
   static const String name = 'PrimaryRoute';
+}
+
+class PrimaryRouteArgs {
+  const PrimaryRouteArgs({this.key});
+
+  final _i5.Key? key;
+
+  @override
+  String toString() {
+    return 'PrimaryRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
