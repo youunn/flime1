@@ -17,13 +17,11 @@ class Engine {
 
   Context get context => _context;
 
-  set schema(Schema value) {
-    _schema = value;
-  }
+  set schema(Schema value) => _schema = value;
 
-  set onCommit(void Function(String) value) {
-    _onCommit = value;
-  }
+  Future setSchemaAsync(Future<Schema> value) async => _schema = await value;
+
+  set onCommit(void Function(String) value) => _onCommit = value;
 
   Engine._init()
       : _schema = Schema(),

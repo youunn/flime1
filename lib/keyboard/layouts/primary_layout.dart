@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class PrimaryLayout extends StatelessWidget {
-  final service = Service()..engine.schema = Schemas.defaultSchema;
+  final service = Service()..engine.setSchemaAsync(Schemas.getDefaultSchema());
   final contextApi = Apis.contextApi;
 
   PrimaryLayout({Key? key}) : super(key: key);

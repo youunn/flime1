@@ -20,14 +20,18 @@ class Dictionary {
   }) async {
     var exists = await databaseExists(join((await getDatabasesPath()), path));
     if (!exists) {
-      await Directory(dirname(path)).create(recursive: true);
+      if (Platform.isAndroid) {
+        await Directory(dirname(path)).create(recursive: true);
 
-      ByteData data = await rootBundle.load(join('assets', path));
-      List<int> bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+        ByteData data = await rootBundle.load(join('assets', path));
+        List<int> bytes =
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
-      await File(join((await getDatabasesPath()), path))
-          .writeAsBytes(bytes, flush: true);
+        await File(join((await getDatabasesPath()), path))
+            .writeAsBytes(bytes, flush: true);
+      } else {
+        // do nothing yet
+      }
     }
     tableName = table;
     codeColumn = code;
