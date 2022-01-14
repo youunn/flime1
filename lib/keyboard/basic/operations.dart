@@ -6,7 +6,7 @@ enum Operation {
 }
 
 class Operations {
-  static void switchLayout(BuildContext context, PageRouteInfo route) {
-    context.router.replace(route);
+  static Future switchLayout(BuildContext context, PageRouteInfo route) async {
+    await context.router.replace(route);
   }
 }

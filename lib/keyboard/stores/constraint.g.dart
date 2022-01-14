@@ -32,42 +32,57 @@ mixin _$Constraint on _Constraint, Store {
     });
   }
 
-  final _$heightAtom = Atom(name: '_Constraint.height');
+  final _$_heightAtom = Atom(name: '_Constraint._height');
 
-  @override
   double get height {
-    _$heightAtom.reportRead();
-    return super.height;
+    _$_heightAtom.reportRead();
+    return super._height;
   }
 
   @override
-  set height(double value) {
-    _$heightAtom.reportWrite(value, super.height, () {
-      super.height = value;
+  double get _height => height;
+
+  @override
+  set _height(double value) {
+    _$_heightAtom.reportWrite(value, super._height, () {
+      super._height = value;
     });
   }
 
-  final _$dprAtom = Atom(name: '_Constraint.dpr');
+  final _$_dprAtom = Atom(name: '_Constraint._dpr');
 
-  @override
   double get dpr {
-    _$dprAtom.reportRead();
-    return super.dpr;
+    _$_dprAtom.reportRead();
+    return super._dpr;
   }
 
   @override
-  set dpr(double value) {
-    _$dprAtom.reportWrite(value, super.dpr, () {
-      super.dpr = value;
+  double get _dpr => dpr;
+
+  @override
+  set _dpr(double value) {
+    _$_dprAtom.reportWrite(value, super._dpr, () {
+      super._dpr = value;
     });
+  }
+
+  final _$_ConstraintActionController = ActionController(name: '_Constraint');
+
+  @override
+  void setHeightAndDpr(double h, double d) {
+    final _$actionInfo = _$_ConstraintActionController.startAction(
+        name: '_Constraint.setHeightAndDpr');
+    try {
+      return super.setHeightAndDpr(h, d);
+    } finally {
+      _$_ConstraintActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
   String toString() {
     return '''
 baseHeight: ${baseHeight},
-height: ${height},
-dpr: ${dpr},
 totalHeightInPx: ${totalHeightInPx}
     ''';
   }

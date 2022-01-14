@@ -9,21 +9,30 @@ class Constraint = _Constraint with _$Constraint;
 abstract class _Constraint with Store {
   @observable
   double baseHeight = 38;
-  @observable
-  double height = 192;
-  @observable
-  double dpr = 1;
+  @readonly
+  double _height = 192;
+  @readonly
+  double _dpr = 1;
 
   final LayoutApi layoutApi = Apis.layoutApi;
+
+  @computed
+  int get totalHeightInPx => ((baseHeight + _height) * _dpr).toInt();
+
   // ignore: unused_field
   late final ReactionDisposer _notifyNative;
 
   void setupReactions() {
-    _notifyNative = reaction((_) => totalHeightInPx, (int h) {
-      layoutApi.setHeight(h);
-    });
+    _notifyNative = reaction(
+      (_) => totalHeightInPx,
+      (int h) => layoutApi.setHeight(h),
+      delay: 100,
+    );
   }
 
-  @computed
-  int get totalHeightInPx => ((baseHeight + height) * dpr).toInt();
+  @action
+  void setHeightAndDpr(double h, double d) {
+    _dpr = d;
+    _height = h;
+  }
 }

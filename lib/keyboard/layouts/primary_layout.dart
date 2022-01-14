@@ -5,7 +5,7 @@ import 'package:flime/input/core/event/event.dart';
 import 'package:flime/input/core/event/event_extension.dart';
 import 'package:flime/keyboard/basic/operations.dart';
 import 'package:flime/keyboard/basic/preset.dart';
-import 'package:flime/keyboard/layouts/utils.dart';
+import 'package:flime/keyboard/widgets/preset_layout.dart';
 import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flime/keyboard/services/input_service.dart';
 import 'package:flime/keyboard/widgets/preset_builder.dart';
@@ -23,9 +23,8 @@ class PrimaryLayout extends StatelessWidget {
     var service = context.read<InputService>();
 
     return PresetBuilder(
-      child: buildFromPreset(
-        context,
-        PrimaryPreset.preset,
+      child: PresetLayout(
+        preset: PrimaryPreset.preset,
         onKey: (KEvent event) async {
           if (await service.onKey(event)) {
             if (service.commitText != '') {
@@ -47,7 +46,10 @@ class PrimaryLayout extends StatelessWidget {
             } else if (event.type == EventType.operation) {
               switch (event.operation) {
                 case Operation.switchLayout:
-                  Operations.switchLayout(context, const SecondaryRoute());
+                  await Operations.switchLayout(
+                    context,
+                    const SecondaryRoute(),
+                  );
                   break;
                 default:
                   break;
@@ -107,8 +109,8 @@ class PrimaryPreset {
     // 第四行
     ..r(
       (r) => r
-        ..k(Ke.operation(Operation.switchLayout),label: 'L2', width: 0.09)
-        ..k(Ke.command(Commands.switchAsciiMode),label: 'ZH/EN', width: 0.09)
+        ..k(Ke.operation(Operation.switchLayout), label: 'L2', width: 0.09)
+        ..k(Ke.command(Commands.switchAsciiMode), label: 'ZH/EN', width: 0.09)
         ..c(Lk.comma, width: 0.18)
         ..c(Lk.space, width: 0.34)
         ..c(Lk.period, width: 0.14)

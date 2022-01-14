@@ -4,7 +4,7 @@ import 'package:flime/input/schemas/options.dart';
 typedef CommandEvent = Function(Engine);
 
 class Commands {
-  static bool switchMode<T extends Enum>(Engine e, List<T> values, String key) {
+  static bool _switchMode<T extends Enum>(Engine e, List<T> values, String key) {
     var value = e.getOption(key);
     if (value == null) return false;
     var index = value.index;
@@ -14,7 +14,7 @@ class Commands {
   }
 
   static void switchAsciiMode(Engine e) {
-    if (switchMode(e, AsciiMode.values, Options.asciiMode)) {
+    if (_switchMode(e, AsciiMode.values, Options.asciiMode)) {
       e.context.clear();
     }
   }
