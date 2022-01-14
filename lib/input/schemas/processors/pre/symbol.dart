@@ -1,6 +1,7 @@
 import 'package:flime/input/core/engine.dart';
 import 'package:flime/input/core/processors/pre_filter.dart';
-import 'package:flime/keyboard/basic/event.dart';
+import 'package:flime/input/core/event/event.dart';
+import 'package:flime/input/schemas/options.dart';
 
 class SymbolFilter extends PreFilter {
   static SymbolFilter? _filter;
@@ -9,8 +10,15 @@ class SymbolFilter extends PreFilter {
 
   factory SymbolFilter() => _filter ??= SymbolFilter._();
 
+  final Map<String, Enum> _options = {
+    Options.asciiMode: AsciiMode.no,
+  };
+
   @override
-  Future<preFilterResult> process(Engine engine, KEvent event) async {
+  Map<String, Enum> get options => _options;
+
+  @override
+  Future<PreFilterResult> process(Engine engine, KEvent event) async {
     throw UnimplementedError();
   }
 }

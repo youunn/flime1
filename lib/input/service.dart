@@ -1,5 +1,5 @@
 import 'package:flime/input/core/engine.dart';
-import 'package:flime/keyboard/basic/event.dart';
+import 'package:flime/input/core/event/event.dart';
 
 class Service {
   final Engine _engine;

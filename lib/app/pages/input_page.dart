@@ -1,6 +1,6 @@
-import 'package:flime/input/schemas/default_schema.dart';
+import 'package:flime/input/schemas/schemas.dart';
 import 'package:flime/input/service.dart';
-import 'package:flime/keyboard/basic/event.dart';
+import 'package:flime/input/core/event/event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

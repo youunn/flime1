@@ -1,10 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flime/api/api.dart';
+import 'package:flime/input/schemas/commands.dart';
 import 'package:flime/keyboard/api/apis.dart';
-import 'package:flime/keyboard/basic/event.dart';
-import 'package:flime/keyboard/basic/event_extension.dart';
+import 'package:flime/input/core/event/event.dart';
+import 'package:flime/input/core/event/event_extension.dart';
+import 'package:flime/keyboard/basic/operations.dart';
 import 'package:flime/keyboard/basic/preset.dart';
-import 'package:flime/keyboard/layouts/widgets.dart';
+import 'package:flime/keyboard/layouts/utils.dart';
 import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flime/keyboard/services/input_service.dart';
 import 'package:flime/keyboard/widgets/preset_builder.dart';
@@ -26,12 +27,12 @@ class PrimaryLayout extends StatelessWidget {
         context,
         PrimaryPreset.preset,
         onKey: (KEvent event) async {
-          if (event.type == EventType.click) {
-            if (await service.onKey(event)) {
-              if (service.commitText != '') {
-                contextApi.commit(Content()..text = service.popCommitText());
-              }
-            } else {
+          if (await service.onKey(event)) {
+            if (service.commitText != '') {
+              contextApi.commit(Content()..text = service.popCommitText());
+            }
+          } else {
+            if (event.type == EventType.click) {
               if (event.click.isBackspace) {
                 contextApi.delete();
               } else if (event.click.isEnter) {
@@ -43,9 +44,15 @@ class PrimaryLayout extends StatelessWidget {
                 content.text = event.click.keyLabel;
                 contextApi.commit(content);
               }
+            } else if (event.type == EventType.operation) {
+              switch (event.operation) {
+                case Operation.switchLayout:
+                  Operations.switchLayout(context, const SecondaryRoute());
+                  break;
+                default:
+                  break;
+              }
             }
-          } else if (event.type == EventType.command) {
-            context.router.replace(const SecondaryRoute());
           }
         },
       ),
@@ -100,9 +107,8 @@ class PrimaryPreset {
     // 第四行
     ..r(
       (r) => r
-        ..k(Ke.command(() {
-          // TODO: replace with a callback variable which could switch preset
-        }), width: 0.18)
+        ..k(Ke.operation(Operation.switchLayout),label: 'L2', width: 0.09)
+        ..k(Ke.command(Commands.switchAsciiMode),label: 'ZH/EN', width: 0.09)
         ..c(Lk.comma, width: 0.18)
         ..c(Lk.space, width: 0.34)
         ..c(Lk.period, width: 0.14)

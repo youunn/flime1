@@ -1,6 +1,5 @@
+import 'package:flime/input/core/event/event.dart';
 import 'package:flime/keyboard/basic/preset.dart';
-
-import 'event.dart';
 
 class K {
   /// 高，单位dpr。

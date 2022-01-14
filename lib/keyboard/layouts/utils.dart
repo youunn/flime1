@@ -1,4 +1,4 @@
-import 'package:flime/keyboard/basic/event.dart';
+import 'package:flime/input/core/event/event.dart';
 import 'package:flime/keyboard/basic/preset.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +20,8 @@ Widget buildFromPreset(
                   SizedBox(
                     width: width * k.width,
                     child: InkWell(
+                      // 暂时只处理单击
                       onTap: () {
-                        // 暂时只处理单击
                         onKey(k.click);
                       },
                       child: Center(

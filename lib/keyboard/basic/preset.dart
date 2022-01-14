@@ -1,4 +1,4 @@
-import 'package:flime/keyboard/basic/event.dart';
+import 'package:flime/input/core/event/event.dart';
 import 'package:flutter/services.dart';
 
 import 'key.dart';

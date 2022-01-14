@@ -1,7 +1,8 @@
 import 'package:flime/input/core/engine.dart';
 import 'package:flime/input/core/processors/pre_filter.dart';
-import 'package:flime/keyboard/basic/event.dart';
-import 'package:flime/keyboard/basic/event_extension.dart';
+import 'package:flime/input/core/event/event.dart';
+import 'package:flime/input/core/event/event_extension.dart';
+import 'package:flime/input/schemas/options.dart';
 
 class Editor extends PreFilter {
   static Editor? _editor;
@@ -10,25 +11,45 @@ class Editor extends PreFilter {
 
   factory Editor() => _editor ??= Editor._();
 
+  final Map<String, Enum> _options = {
+    Options.asciiMode: AsciiMode.no,
+  };
+
   @override
-  Future<preFilterResult> process(Engine engine, KEvent event) async {
-    if (event.click.isBackspace) {
-      if (engine.context.input.isNotEmpty) {
-        await engine.context.popInput();
-        return preFilterResult.finish;
+  Map<String, Enum> get options => _options;
+
+  @override
+  Future<PreFilterResult> process(Engine engine, KEvent event) async {
+    if (engine.getOption(Options.asciiMode) == AsciiMode.no) {
+      if (event.click.isBackspace) {
+        if (engine.context.input.isNotEmpty) {
+          await engine.context.popInput();
+          return PreFilterResult.finish;
+        }
+        return PreFilterResult.denied;
       }
-      return preFilterResult.denied;
-    } else if (event.click.isSpace) {
-      if (engine.context.hasCandidates) {
-        engine.context.commitCurrent();
-        return preFilterResult.finish;
-      } else if (engine.context.input.isEmpty) {
-        return preFilterResult.denied;
+
+      if (event.click.isSpace) {
+        if (engine.context.hasCandidates) {
+          engine.context.commitCurrent();
+          return PreFilterResult.finish;
+        } else if (engine.context.input.isEmpty) {
+          return PreFilterResult.denied;
+        }
       }
-    } else if (event.click.isAlphabet) {
-      return preFilterResult.pass;
+
+      // TODO: or is symbol
+      if (event.click.isAlphabet) {
+        return PreFilterResult.pass;
+      }
+
+      return PreFilterResult.denied;
     }
 
-    return preFilterResult.denied;
+    if (event.click.isEnter || event.click.isBackspace || event.click.isSpace) {
+      return PreFilterResult.denied;
+    } else {
+      return PreFilterResult.pass;
+    }
   }
 }

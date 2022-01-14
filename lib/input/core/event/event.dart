@@ -1,3 +1,5 @@
+import 'package:flime/input/schemas/commands.dart';
+import 'package:flime/keyboard/basic/operations.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,14 +10,26 @@ class KEvent {
   final LogicalKeyboardKey? _click;
   final LogicalKeySet? _combo;
   final List<LogicalKeySet>? _chord;
-  final Function()? _command;
+  final CommandEvent? _command;
+  final Operation? _operation;
 
   // TODO: repeatable
   final bool _repeatable;
 
-  KEvent._(this.type, this._click, this._combo, this._chord, this._command,
-      {bool repeatable = false})
-      : _repeatable = repeatable {
+  KEvent._(
+    this.type, {
+    LogicalKeyboardKey? click,
+    LogicalKeySet? combo,
+    List<LogicalKeySet>? chord,
+    CommandEvent? command,
+    Operation? operation,
+    bool repeatable = false,
+  })  : _click = click,
+        _combo = combo,
+        _chord = chord,
+        _command = command,
+        _operation = operation,
+        _repeatable = repeatable {
     switch (type) {
       case EventType.click:
         assert(_click != null);
@@ -29,21 +43,25 @@ class KEvent {
       case EventType.command:
         assert(_command != null);
         break;
+      case EventType.operation:
+        assert(_operation != null);
+        break;
     }
   }
 
   KEvent.click(LogicalKeyboardKey click, {bool repeatable = false})
-      : this._(EventType.click, click, null, null, null,
-            repeatable: repeatable);
+      : this._(EventType.click, click: click, repeatable: repeatable);
 
-  KEvent.combo(LogicalKeySet combo)
-      : this._(EventType.combo, null, combo, null, null);
+  KEvent.combo(LogicalKeySet combo) : this._(EventType.combo, combo: combo);
 
   KEvent.chord(List<LogicalKeySet> chord)
-      : this._(EventType.chord, null, null, chord, null);
+      : this._(EventType.chord, chord: chord);
 
-  KEvent.command(Function() command)
-      : this._(EventType.command, null, null, null, command);
+  KEvent.command(CommandEvent command)
+      : this._(EventType.command, command: command);
+
+  KEvent.operation(Operation operation)
+      : this._(EventType.operation, operation: operation);
 
   LogicalKeyboardKey get click => _click!;
 
@@ -51,7 +69,9 @@ class KEvent {
 
   List<LogicalKeySet> get chord => _chord!;
 
-  Function() get command => _command!;
+  CommandEvent get command => _command!;
+
+  Operation get operation => _operation!;
 
   bool get repeatable => _repeatable;
 
@@ -73,9 +93,18 @@ class KEvent {
       case EventType.command:
         label = 'command';
         break;
+      case EventType.operation:
+        label = 'operation';
+        break;
     }
     return label;
   }
 }
 
-enum EventType { click, combo, chord, command }
+enum EventType {
+  click,
+  combo,
+  chord,
+  command,
+  operation,
+}

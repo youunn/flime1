@@ -7,11 +7,33 @@ class Schema {
   final List<Translator> translators;
   final List<PostFilter> postFilters;
 
-  // TODO: options
+  Map<String, Enum> options = {};
 
   Schema({
     this.preFilters = const [],
     this.translators = const [],
     this.postFilters = const [],
-  });
+  }) {
+    for (var e in preFilters) {
+      e.options.forEach((k, v) {
+        options[k] = v;
+      });
+    }
+    for (var e in translators) {
+      e.options.forEach((k, v) {
+        options[k] = v;
+      });
+    }
+    for (var e in postFilters) {
+      e.options.forEach((k, v) {
+        options[k] = v;
+      });
+    }
+  }
+
+  Enum? getOption(String s) => options[s];
+
+  void setOption(String s, Enum value) {
+    if (options.containsKey(s)) options[s] = value;
+  }
 }

@@ -1,5 +1,5 @@
 import 'package:flime/input/service.dart';
-import 'package:flime/keyboard/basic/event.dart';
+import 'package:flime/input/core/event/event.dart';
 import 'package:flime/keyboard/stores/input_status.dart';
 
 class InputService extends Service {

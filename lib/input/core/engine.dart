@@ -1,5 +1,5 @@
+import 'package:flime/input/core/event/event.dart';
 import 'package:flime/input/core/processors/pre_filter.dart';
-import 'package:flime/keyboard/basic/event.dart';
 
 import 'context.dart';
 import 'schema.dart';
@@ -24,15 +24,19 @@ class Engine {
 
   set onCommit(void Function(String) value) => _onCommit = value;
 
+  Enum? getOption(String s) => _schema.getOption(s);
+
+  void setOption(String s, Enum value) => _schema.setOption(s, value);
+
   Future<bool> processKey(KEvent event) async {
     for (var preFilter in _schema.preFilters) {
       var result = await preFilter.process(this, event);
       switch (result) {
-        case preFilterResult.finish:
+        case PreFilterResult.finish:
           return true;
-        case preFilterResult.denied:
+        case PreFilterResult.denied:
           return false;
-        case preFilterResult.pass:
+        case PreFilterResult.pass:
           break;
       }
     }

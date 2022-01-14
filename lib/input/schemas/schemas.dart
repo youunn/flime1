@@ -1,5 +1,6 @@
 import 'package:flime/input/core/schema.dart';
 import 'package:flime/input/schemas/processors/post/de_dup.dart';
+import 'package:flime/input/schemas/processors/pre/command.dart';
 import 'package:flime/input/schemas/processors/pre/editor.dart';
 import 'package:flime/input/schemas/processors/pre/normal.dart';
 import 'package:flime/input/schemas/processors/trans/default_table.dart';
@@ -11,6 +12,7 @@ class Schemas extends Schema {
       // line break
       _defaultSchema ??= Schema(
         preFilters: [
+          CommandFilter(),
           Editor(),
           NormalFilter(),
         ],

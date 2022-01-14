@@ -1,4 +1,4 @@
-import 'package:flime/input/schemas/default_schema.dart';
+import 'package:flime/input/schemas/schemas.dart';
 import 'package:flime/keyboard/services/input_service.dart';
 import 'package:flime/keyboard/stores/constraint.dart';
 import 'package:flime/keyboard/router/router.gr.dart';
