@@ -20,7 +20,7 @@ class PresetBuilder extends StatelessWidget {
           var h = box.getMaxIntrinsicHeight(w);
           var dpr = MediaQuery.of(context).devicePixelRatio;
 
-          var constraint = context.read<Constraint>();
+          final constraint = context.read<Constraint>();
           constraint.setHeightAndDpr(h, dpr);
         });
 

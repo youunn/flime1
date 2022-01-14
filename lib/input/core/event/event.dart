@@ -8,8 +8,10 @@ class KEvent {
 
   // 借用一下shortcuts
   final LogicalKeyboardKey? _click;
-  final LogicalKeySet? _combo;
-  final List<LogicalKeySet>? _chord;
+
+  // 好像暂时不需要LogicalKeySet
+  final SingleActivator? _combo;
+  final List<SingleActivator>? _chord;
   final CommandEvent? _command;
   final Operation? _operation;
 
@@ -19,8 +21,8 @@ class KEvent {
   KEvent._(
     this.type, {
     LogicalKeyboardKey? click,
-    LogicalKeySet? combo,
-    List<LogicalKeySet>? chord,
+    SingleActivator? combo,
+    List<SingleActivator>? chord,
     CommandEvent? command,
     Operation? operation,
     bool repeatable = false,
@@ -52,9 +54,9 @@ class KEvent {
   KEvent.click(LogicalKeyboardKey click, {bool repeatable = false})
       : this._(EventType.click, click: click, repeatable: repeatable);
 
-  KEvent.combo(LogicalKeySet combo) : this._(EventType.combo, combo: combo);
+  KEvent.combo(SingleActivator combo) : this._(EventType.combo, combo: combo);
 
-  KEvent.chord(List<LogicalKeySet> chord)
+  KEvent.chord(List<SingleActivator> chord)
       : this._(EventType.chord, chord: chord);
 
   KEvent.command(CommandEvent command)
@@ -65,9 +67,9 @@ class KEvent {
 
   LogicalKeyboardKey get click => _click!;
 
-  LogicalKeySet get combo => _combo!;
+  SingleActivator get combo => _combo!;
 
-  List<LogicalKeySet> get chord => _chord!;
+  List<SingleActivator> get chord => _chord!;
 
   CommandEvent get command => _command!;
 
@@ -82,12 +84,12 @@ class KEvent {
         label = click.keyLabel;
         break;
       case EventType.combo:
-        label = combo.keys.fold('', (p, e) => p + e.keyLabel);
+        label = combo.triggers.fold('', (p, e) => p + e.keyLabel);
         break;
       case EventType.chord:
         label = chord.fold(
           '',
-          (p, e) => p + e.keys.fold('', (p, e) => p + e.keyLabel),
+          (p, e) => p + e.triggers.fold('', (p, e) => p + e.keyLabel),
         );
         break;
       case EventType.command:

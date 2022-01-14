@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
-extension KeyEventParsing on LogicalKeyboardKey {
+extension LogicalKeyboardKeyParsing on LogicalKeyboardKey {
   KeyType get type {
     if (isDigit) {
       return KeyType.digit;
@@ -26,6 +27,8 @@ extension KeyEventParsing on LogicalKeyboardKey {
 
   bool get isEnter => this == LogicalKeyboardKey.enter;
 
+  bool get isShift => this == LogicalKeyboardKey.shift;
+
   bool operator <=(LogicalKeyboardKey other) =>
       keyId.compareTo(other.keyId) <= 0;
 
@@ -37,4 +40,21 @@ extension KeyEventParsing on LogicalKeyboardKey {
   bool operator >(LogicalKeyboardKey other) => keyId.compareTo(other.keyId) > 0;
 }
 
-enum KeyType { alphabet, digit, space, backspace, enter, other }
+enum KeyType { alphabet, digit, space, backspace, enter, shift, other }
+
+extension SingleActivatorParsing on SingleActivator {
+  int get modifiers {
+    var result = 0;
+    if (control) result |= Modifiers.control;
+    if (shift) result |= Modifiers.shift;
+    if (alt) result |= Modifiers.alt;
+
+    return result;
+  }
+}
+
+class Modifiers {
+  static const int control = 1 << 0;
+  static const int shift = 1 << 1;
+  static const int alt = 1 << 2;
+}

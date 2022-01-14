@@ -12,15 +12,17 @@ abstract class _InputStatus with Store {
       : candidates = ObservableList.of(
           _inputService.engine.context.candidates,
         ),
-        input = _inputService.engine.context.input {
+        input = _inputService.engine.context.input,
+        shifted = false {
     _inputService.bindStatus(this as InputStatus);
   }
 
   @observable
   ObservableList<String> candidates;
-
   @observable
   String input;
+  @observable
+  bool shifted;
 
   @action
   void update() {

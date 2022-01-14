@@ -21,32 +21,42 @@ class Editor extends PreFilter {
   @override
   Future<PreFilterResult> process(Engine engine, KEvent event) async {
     if (engine.getOption(Options.asciiMode) == AsciiMode.no) {
-      if (event.click.isBackspace) {
-        if (engine.context.input.isNotEmpty) {
-          await engine.context.popInput();
-          return PreFilterResult.finish;
-        }
-        return PreFilterResult.denied;
-      }
-
-      if (event.click.isSpace) {
-        if (engine.context.hasCandidates) {
-          engine.context.commitCurrent();
-          return PreFilterResult.finish;
-        } else if (engine.context.input.isEmpty) {
+      if (event.type == EventType.click) {
+        if (event.click.isBackspace) {
+          if (engine.context.input.isNotEmpty) {
+            await engine.context.popInput();
+            return PreFilterResult.finish;
+          }
           return PreFilterResult.denied;
         }
-      }
 
-      // TODO: or is symbol
-      if (event.click.isAlphabet) {
-        return PreFilterResult.pass;
-      }
+        if (event.click.isSpace) {
+          if (engine.context.hasCandidates) {
+            engine.context.commitCurrent();
+            return PreFilterResult.finish;
+          } else if (engine.context.input.isEmpty) {
+            return PreFilterResult.denied;
+          }
+        }
 
-      return PreFilterResult.denied;
+        // TODO: or is symbol
+        if (event.click.isAlphabet) {
+          return PreFilterResult.pass;
+        }
+
+        return PreFilterResult.denied;
+      }
     }
 
-    if (event.click.isEnter || event.click.isBackspace || event.click.isSpace) {
+    if (event.type == EventType.combo) {
+      return PreFilterResult.pass;
+    }
+
+    if (event.type == EventType.click &&
+        (event.click.isEnter ||
+            event.click.isBackspace ||
+            event.click.isSpace ||
+            event.click.isShift)) {
       return PreFilterResult.denied;
     } else {
       return PreFilterResult.pass;

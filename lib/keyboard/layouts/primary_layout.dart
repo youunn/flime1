@@ -5,6 +5,7 @@ import 'package:flime/input/core/event/event.dart';
 import 'package:flime/input/core/event/event_extension.dart';
 import 'package:flime/keyboard/basic/operations.dart';
 import 'package:flime/keyboard/basic/preset.dart';
+import 'package:flime/keyboard/stores/input_status.dart';
 import 'package:flime/keyboard/widgets/preset_layout.dart';
 import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flime/keyboard/services/input_service.dart';
@@ -20,15 +21,30 @@ class PrimaryLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var service = context.read<InputService>();
-
     return PresetBuilder(
       child: PresetLayout(
         preset: PrimaryPreset.preset,
         onKey: (KEvent event) async {
-          if (await service.onKey(event)) {
+          final inputStatus = context.read<InputStatus>();
+          final service = context.read<InputService>();
+
+          bool result;
+          if (inputStatus.shifted &&
+              event.type == EventType.click &&
+              event.click != LogicalKeyboardKey.shift) {
+            result = await service.onKey(
+              KEvent.combo(SingleActivator(event.click, shift: true)),
+            );
+          } else {
+            result = await service.onKey(event);
+          }
+          if (result) {
             if (service.commitText != '') {
               contextApi.commit(Content()..text = service.popCommitText());
+            }
+            if (event.type == EventType.click &&
+                event.click == LogicalKeyboardKey.shift) {
+              inputStatus.shifted = false;
             }
           } else {
             if (event.type == EventType.click) {
@@ -36,11 +52,23 @@ class PrimaryLayout extends StatelessWidget {
                 contextApi.delete();
               } else if (event.click.isEnter) {
                 contextApi.enter();
+              } else if (event.click.isShift) {
+                inputStatus.shifted = !inputStatus.shifted;
+              } else if (event.click.isAlphabet) {
+                var content = Content();
+                if (!inputStatus.shifted) {
+                  content.text = event.click.keyLabel.toLowerCase();
+                  contextApi.commit(content);
+                } else {
+                  content.text = event.click.keyLabel;
+                  contextApi.commit(content);
+                  inputStatus.shifted = false;
+                }
               } else if (event.click.keyId >=
                       LogicalKeyboardKey.exclamation.keyId &&
                   event.click.keyId <= LogicalKeyboardKey.tilde.keyId) {
                 var content = Content();
-                content.text = event.click.keyLabel;
+                content.text = event.click.keyLabel.toLowerCase();
                 contextApi.commit(content);
               }
             } else if (event.type == EventType.operation) {

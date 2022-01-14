@@ -39,6 +39,21 @@ mixin _$InputStatus on _InputStatus, Store {
     });
   }
 
+  final _$shiftedAtom = Atom(name: '_InputStatus.shifted');
+
+  @override
+  bool get shifted {
+    _$shiftedAtom.reportRead();
+    return super.shifted;
+  }
+
+  @override
+  set shifted(bool value) {
+    _$shiftedAtom.reportWrite(value, super.shifted, () {
+      super.shifted = value;
+    });
+  }
+
   final _$_InputStatusActionController = ActionController(name: '_InputStatus');
 
   @override
@@ -56,7 +71,8 @@ mixin _$InputStatus on _InputStatus, Store {
   String toString() {
     return '''
 candidates: ${candidates},
-input: ${input}
+input: ${input},
+shifted: ${shifted}
     ''';
   }
 }

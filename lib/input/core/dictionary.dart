@@ -23,15 +23,15 @@ class Dictionary {
   }) async {
     await _lock.synchronized(() async {
       if (!_initialized) {
-        var exists = await databaseExists(
-            join((await getDatabasesPath()), path));
+        var exists =
+            await databaseExists(join((await getDatabasesPath()), path));
         if (!exists) {
           if (Platform.isAndroid) {
             await Directory(dirname(path)).create(recursive: true);
 
             ByteData data = await rootBundle.load(join('assets', path));
             List<int> bytes =
-            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+                data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
             await File(join((await getDatabasesPath()), path))
                 .writeAsBytes(bytes, flush: true);
@@ -45,6 +45,7 @@ class Dictionary {
         _indexColumn = index;
         _database = await openDatabase(path, readOnly: true);
         _initialized = true;
+        await _database!.rawQuery('PRAGMA case_sensitive_like = ON');
       }
     });
   }
