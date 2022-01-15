@@ -3,7 +3,30 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - pigeons/*.dart
+    - lib/api/api.dart
+    - lib/**.g.dart
+    - lib/**.gr.dart
 
 linter:
   rules:
+    unnecessary_statements: true
+    avoid_classes_with_only_static_members: true
+    avoid_positional_boolean_parameters: true
+    cascade_invocations: true
+    directives_ordering: true
+    eol_at_end_of_file: true
+    join_return_with_assignment: true
+    noop_primitive_operations: true
+    omit_local_variable_types: true
+    prefer_final_in_for_each: true
+    prefer_final_locals: true
+    prefer_interpolation_to_compose_strings: true
+    prefer_null_aware_method_calls: true
     prefer_single_quotes: true
+    require_trailing_commas: true
+    sized_box_shrink_expand: true
+    type_annotate_public_apis: true
+    unawaited_futures: true
+    unnecessary_parenthesis: true
+    use_decorated_box: true
+    sort_pub_dependencies: true
