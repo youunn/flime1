@@ -23,14 +23,19 @@ class NormalFilter extends PreFilter {
     if (engine.getOption(Options.asciiMode) == AsciiMode.no) {
       if (event.type == EventType.click) {
         if (event.click.isAlphabet) {
-          await pushInput(engine, event.click.keyLabel);
+          await pushInput(engine, event.click.keyLabel.toLowerCase());
           return PreFilterResult.finish;
         }
       } else if (event.type == EventType.combo) {
         if (event.combo.modifiers == Modifiers.shift) {
           final click = event.combo.trigger;
           if (click.isAlphabet) {
-            await pushInput(engine, click.keyLabel, shifted: true);
+            // TODO: 这样shift就变成caps lock了，还是一次性的比较常用吧
+            await pushInput(
+              engine,
+              click.keyLabel.toLowerCase(),
+              shifted: true,
+            );
             return PreFilterResult.finish;
           }
         }
@@ -49,23 +54,28 @@ class NormalFilter extends PreFilter {
   }) async {
     if (engine.context.hasCandidates) {
       final previousInput = engine.context.input;
-      final input = shifted ? text : text.toLowerCase();
+      final input = (shifted && text.length == 1) ? text.toUpperCase() : text;
       await engine.context.pushInput(input);
 
       if (!engine.context.hasCandidates) {
-        await engine.context.setInput(previousInput);
-        engine.context.commitCurrent();
-        await engine.context.setInput(input);
-        if (!engine.context.hasCandidates) {
-          engine.context.candidates.add(input);
+        if (previousInput.isEmpty) {
+          engine.context.commitDirectly(input);
+        } else {
+          await engine.context.setInput(previousInput);
           engine.context.commitCurrent();
+          // recursive
+          await pushInput(engine, input);
         }
       } else if (engine.context.hasSingleCandidate) {
         engine.context.commitCurrent();
       }
     } else {
-      final input = shifted ? text : text.toLowerCase();
+      final input = (shifted && text.length == 1) ? text.toUpperCase() : text;
       await engine.context.pushInput(input);
+      if (!engine.context.hasCandidates) {
+        await engine.context.clear();
+        engine.context.commitDirectly(input);
+      }
     }
   }
 }

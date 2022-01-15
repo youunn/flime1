@@ -60,4 +60,9 @@ class Context {
   }
 
   bool commitCurrent() => commit(0);
+
+  void commitDirectly(String text) {
+    _onCommit(text);
+    clear();
+  }
 }
