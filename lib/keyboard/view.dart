@@ -1,7 +1,7 @@
 import 'package:flime/input/schemas/schemas.dart';
+import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flime/keyboard/services/input_service.dart';
 import 'package:flime/keyboard/stores/constraint.dart';
-import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flime/keyboard/stores/input_status.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

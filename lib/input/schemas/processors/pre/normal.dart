@@ -1,7 +1,7 @@
 import 'package:flime/input/core/engine.dart';
-import 'package:flime/input/core/processors/pre_filter.dart';
 import 'package:flime/input/core/event/event.dart';
 import 'package:flime/input/core/event/event_extension.dart';
+import 'package:flime/input/core/processors/pre_filter.dart';
 import 'package:flime/input/schemas/options.dart';
 
 class NormalFilter extends PreFilter {
@@ -28,7 +28,7 @@ class NormalFilter extends PreFilter {
         }
       } else if (event.type == EventType.combo) {
         if (event.combo.modifiers == Modifiers.shift) {
-          var click = event.combo.trigger;
+          final click = event.combo.trigger;
           if (click.isAlphabet) {
             await pushInput(engine, click.keyLabel, shifted: true);
             return PreFilterResult.finish;
@@ -42,13 +42,14 @@ class NormalFilter extends PreFilter {
     return PreFilterResult.denied;
   }
 
-  Future<void> pushInput(Engine engine,
-      String text, {
-        bool shifted = false,
-      }) async {
+  Future<void> pushInput(
+    Engine engine,
+    String text, {
+    bool shifted = false,
+  }) async {
     if (engine.context.hasCandidates) {
-      var previousInput = engine.context.input;
-      var input = shifted ? text : text.toLowerCase();
+      final previousInput = engine.context.input;
+      final input = shifted ? text : text.toLowerCase();
       await engine.context.pushInput(input);
 
       if (!engine.context.hasCandidates) {
@@ -63,7 +64,7 @@ class NormalFilter extends PreFilter {
         engine.context.commitCurrent();
       }
     } else {
-      var input = shifted ? text : text.toLowerCase();
+      final input = shifted ? text : text.toLowerCase();
       await engine.context.pushInput(input);
     }
   }

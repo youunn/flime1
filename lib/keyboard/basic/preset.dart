@@ -24,7 +24,7 @@ class Preset extends Iterable<KeyboardRow> {
     KeyboardRow Function(KeyboardRow) init, {
     double? height,
   }) {
-    var row = KeyboardRow(
+    final row = KeyboardRow(
       height: height ?? this.height,
       preset: this,
     );
@@ -49,7 +49,7 @@ class KeyboardRow extends Iterable<K> {
     double? width,
     double? height,
   }) {
-    var key = K(
+    final key = K(
       height: height ?? this.height,
       width: width ?? preset.width,
       preset: preset,
@@ -65,7 +65,7 @@ class KeyboardRow extends Iterable<K> {
     double? width,
     double? height,
   }) {
-    var key = K(
+    final key = K(
       height: height ?? this.height,
       width: width ?? preset.width,
       preset: preset,

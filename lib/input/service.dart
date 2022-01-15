@@ -18,7 +18,7 @@ class Service {
   Future<bool> onKey(KEvent event) => _engine.processKey(event);
 
   String popCommitText() {
-    var s = _commitText;
+    final s = _commitText;
     _commitText = '';
     return s;
   }

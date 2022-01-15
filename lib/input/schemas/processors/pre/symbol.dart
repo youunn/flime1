@@ -1,6 +1,6 @@
 import 'package:flime/input/core/engine.dart';
-import 'package:flime/input/core/processors/pre_filter.dart';
 import 'package:flime/input/core/event/event.dart';
+import 'package:flime/input/core/processors/pre_filter.dart';
 import 'package:flime/input/schemas/options.dart';
 
 class SymbolFilter extends PreFilter {

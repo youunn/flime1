@@ -12,8 +12,9 @@ class Engine {
   Engine()
       : _schema = Schema(),
         _context = Context() {
-    _context.onChange = compose;
-    _context.onCommit = commit;
+    _context
+      ..onChange = compose
+      ..onCommit = commit;
   }
 
   Context get context => _context;
@@ -29,8 +30,8 @@ class Engine {
   void setOption(String s, Enum value) => _schema.setOption(s, value);
 
   Future<bool> processKey(KEvent event) async {
-    for (var preFilter in _schema.preFilters) {
-      var result = await preFilter.process(this, event);
+    for (final preFilter in _schema.preFilters) {
+      final result = await preFilter.process(this, event);
       switch (result) {
         case PreFilterResult.finish:
           return true;
@@ -47,11 +48,11 @@ class Engine {
   Future compose() async {
     if (_context.input.isNotEmpty) {
       _context.candidates.clear();
-      for (var translator in _schema.translators) {
+      for (final translator in _schema.translators) {
         _context.candidates.addAll(await translator.process(_context.input));
       }
-      for (var postFilter in _schema.postFilters) {
-        var filtered = postFilter.process(_context.candidates);
+      for (final postFilter in _schema.postFilters) {
+        final filtered = postFilter.process(_context.candidates);
         _context.candidates.clear();
         _context.candidates.addAll(filtered);
       }

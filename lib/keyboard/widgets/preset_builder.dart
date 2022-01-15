@@ -12,16 +12,13 @@ class PresetBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, _) {
-        var boxKey = GlobalKey();
+        final boxKey = GlobalKey();
         SchedulerBinding.instance!.addPostFrameCallback((_) {
-          RenderBox box =
-              boxKey.currentContext!.findRenderObject() as RenderBox;
-          var w = box.getMaxIntrinsicWidth(double.infinity);
-          var h = box.getMaxIntrinsicHeight(w);
-          var dpr = MediaQuery.of(context).devicePixelRatio;
-
-          final constraint = context.read<Constraint>();
-          constraint.setHeightAndDpr(h, dpr);
+          final box = boxKey.currentContext!.findRenderObject() as RenderBox;
+          final w = box.getMaxIntrinsicWidth(double.infinity);
+          final h = box.getMaxIntrinsicHeight(w);
+          final dpr = MediaQuery.of(context).devicePixelRatio;
+          context.read<Constraint>().setHeightAndDpr(h, dpr);
         });
 
         return Container(

@@ -14,7 +14,7 @@ abstract class _Constraint with Store {
   @readonly
   double _dpr = 1;
 
-  final LayoutApi layoutApi = Apis.layoutApi;
+  final LayoutApi layoutApi = scopedLayoutApi;
 
   @computed
   int get totalHeightInPx => ((baseHeight + _height) * _dpr).toInt();

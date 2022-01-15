@@ -14,17 +14,17 @@ class Schema {
     this.translators = const [],
     this.postFilters = const [],
   }) {
-    for (var e in preFilters) {
+    for (final e in preFilters) {
       e.options.forEach((k, v) {
         options[k] = v;
       });
     }
-    for (var e in translators) {
+    for (final e in translators) {
       e.options.forEach((k, v) {
         options[k] = v;
       });
     }
-    for (var e in postFilters) {
+    for (final e in postFilters) {
       e.options.forEach((k, v) {
         options[k] = v;
       });

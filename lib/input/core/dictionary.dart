@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:synchronized/synchronized.dart';
 
 class Dictionary {
@@ -23,17 +23,17 @@ class Dictionary {
   }) async {
     await _lock.synchronized(() async {
       if (!_initialized) {
-        var exists =
-            await databaseExists(join((await getDatabasesPath()), path));
+        final exists =
+            await databaseExists(join(await getDatabasesPath(), path));
         if (!exists) {
           if (Platform.isAndroid) {
             await Directory(dirname(path)).create(recursive: true);
 
-            ByteData data = await rootBundle.load(join('assets', path));
-            List<int> bytes =
+            final data = await rootBundle.load(join('assets', path));
+            final bytes =
                 data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
-            await File(join((await getDatabasesPath()), path))
+            await File(join(await getDatabasesPath(), path))
                 .writeAsBytes(bytes, flush: true);
           } else {
             // do nothing yet
@@ -53,36 +53,40 @@ class Dictionary {
   bool get initialized => _initialized;
 
   Future<List<Entry>> getList(String code) async {
-    var results = (await _database?.query(
+    final results = (await _database?.query(
           _tableName,
           columns: [_codeColumn, _wordColumn, _indexColumn],
           where: '$_codeColumn = ?',
           whereArgs: [code],
           limit: 100,
         ))
-            ?.map((e) => Entry(
-                  code: e[_codeColumn] as String,
-                  word: e[_wordColumn] as String,
-                  index: e[_indexColumn] as int,
-                ))
+            ?.map(
+              (e) => Entry(
+                code: e[_codeColumn] as String,
+                word: e[_wordColumn] as String,
+                index: e[_indexColumn] as int,
+              ),
+            )
             .toList() ??
         [];
     return results..sort(Entry.compare);
   }
 
   Future<List<Entry>> getAll(String code, int count) async {
-    var results = (await _database?.query(
+    final results = (await _database?.query(
           _tableName,
           columns: [_codeColumn, _wordColumn, _indexColumn],
           where: '$_codeColumn like ? || \'%\'',
           whereArgs: [code],
           limit: 100,
         ))
-            ?.map((e) => Entry(
-                  code: e[_codeColumn] as String,
-                  word: e[_wordColumn] as String,
-                  index: e[_indexColumn] as int,
-                ))
+            ?.map(
+              (e) => Entry(
+                code: e[_codeColumn] as String,
+                word: e[_wordColumn] as String,
+                index: e[_indexColumn] as int,
+              ),
+            )
             .toList() ??
         [];
 
@@ -102,7 +106,7 @@ class Entry {
   });
 
   static int compare(Entry a, Entry b) {
-    var r1 = a.code.length.compareTo(b.code.length);
+    final r1 = a.code.length.compareTo(b.code.length);
     if (r1 != 0) {
       return r1;
     } else {
