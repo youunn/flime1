@@ -33,7 +33,7 @@ class _InputColumnState extends State<InputColumn> {
   void initState() {
     super.initState();
     service = Service();
-    Schemas.getDefaultSchemaAsync().then((value) => service.engine.schema = value);
+    getDefaultSchemaAsync().then((value) => service.engine.schema = value);
   }
 
   @override

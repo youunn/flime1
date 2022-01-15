@@ -22,32 +22,37 @@ class NormalFilter extends PreFilter {
   Future<PreFilterResult> process(Engine engine, KEvent event) async {
     if (engine.getOption(Options.asciiMode) == AsciiMode.no) {
       if (event.type == EventType.click) {
-        if (event.click.isAlphabet) {
-          await pushInput(engine, event.click.keyLabel.toLowerCase());
-          return PreFilterResult.finish;
+        if (event.click.isNormalChar) {
+          if (await pushInput(engine, event.click.keyLabel.toLowerCase())) {
+            return PreFilterResult.finish;
+          } else {
+            return PreFilterResult.pass;
+          }
         }
       } else if (event.type == EventType.combo) {
         if (event.combo.modifiers == Modifiers.shift) {
           final click = event.combo.trigger;
-          if (click.isAlphabet) {
-            // TODO: 这样shift就变成caps lock了，还是一次性的比较常用吧
-            await pushInput(
+          if (click.isNormalChar) {
+            if (await pushInput(
               engine,
               click.keyLabel.toLowerCase(),
               shifted: true,
-            );
-            return PreFilterResult.finish;
+            )) {
+              return PreFilterResult.finish;
+            } else {
+              return PreFilterResult.pass;
+            }
           }
         }
       }
 
-      return PreFilterResult.denied;
+      return PreFilterResult.pass;
     }
 
-    return PreFilterResult.denied;
+    return PreFilterResult.pass;
   }
 
-  Future<void> pushInput(
+  Future<bool> pushInput(
     Engine engine,
     String text, {
     bool shifted = false,
@@ -55,27 +60,41 @@ class NormalFilter extends PreFilter {
     if (engine.context.hasCandidates) {
       final previousInput = engine.context.input;
       final input = (shifted && text.length == 1) ? text.toUpperCase() : text;
+
+      final selector = text.selector;
+      if (await engine.context.commitAt(selector)) return true;
+
       await engine.context.pushInput(input);
 
       if (!engine.context.hasCandidates) {
-        if (previousInput.isEmpty) {
-          engine.context.commitDirectly(input);
-        } else {
-          await engine.context.setInput(previousInput);
-          engine.context.commitCurrent();
-          // recursive
-          await pushInput(engine, input);
-        }
+        await engine.context.setInput(previousInput);
+        await engine.context.commitCurrent();
+        // recursive
+        return await pushInput(engine, input);
       } else if (engine.context.hasSingleCandidate) {
-        engine.context.commitCurrent();
+        await engine.context.commitCurrent();
       }
     } else {
       final input = (shifted && text.length == 1) ? text.toUpperCase() : text;
       await engine.context.pushInput(input);
       if (!engine.context.hasCandidates) {
         await engine.context.clear();
-        engine.context.commitDirectly(input);
+        return false;
       }
     }
+
+    return true;
+  }
+}
+
+extension _SelectorCheck on String {
+  int get selector {
+    if (length != 1) return -1;
+    if (this == ' ') return 0;
+    final value = int.tryParse(this);
+    if (value == null) return -1;
+    const limit = 3;
+    if (value > limit || value < 1) return -1;
+    return value - 1;
   }
 }

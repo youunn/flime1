@@ -19,6 +19,49 @@ class SymbolFilter extends PreFilter {
 
   @override
   Future<PreFilterResult> process(Engine engine, KEvent event) async {
-    throw UnimplementedError();
+    if (engine.getOption(Options.asciiMode) == AsciiMode.yes) {
+      return PreFilterResult.pass;
+    }
+
+    if (event.type == EventType.click) {
+      final v = _map[event.click.keyLabel];
+      if (v != null) {
+        await engine.context.commitDirectly(v);
+        return PreFilterResult.finish;
+      } else {
+        return PreFilterResult.pass;
+      }
+    }
+
+    return PreFilterResult.pass;
   }
+
+  static const Map<String, String> _map = {
+    ',': '，',
+    '.': '。',
+    '<': '《',
+    '>': '》',
+    '?': '？',
+    ';': '；',
+    ':': '：',
+    // TODO: 成对引号
+    '\'': '’',
+    '"': '”',
+    '\\': '、',
+    '~': '～',
+    '!': '！',
+    '@': '@',
+    '#': '＃',
+    '\$': '￥',
+    '%': '％',
+    '^': '……',
+    '&': '＆',
+    '*': '＊',
+    '(': '（',
+    ')': '）',
+    '[': '【',
+    ']': '】',
+    '{': '「',
+    '}': '」',
+  };
 }

@@ -59,25 +59,28 @@ class PrimaryLayout extends StatelessWidget {
       }
     } else {
       if (event.type == EventType.click) {
-        if (event.click.isBackspace) {
-          unawaited(contextApi.delete());
-        } else if (event.click.isEnter) {
-          unawaited(contextApi.enter());
-        } else if (event.click.isShift) {
+        if (event.click.isShift) {
           inputStatus.shifted = !inputStatus.shifted;
-        } else if (event.click.isAlphabet) {
-          final content = Content();
-          if (!inputStatus.shifted) {
-            content.text = event.click.keyLabel.toLowerCase();
-            unawaited(contextApi.commit(content));
-          } else {
-            content.text = event.click.keyLabel;
+        } else {
+          if (event.click.isBackspace) {
+            unawaited(contextApi.delete());
+          } else if (event.click.isEnter) {
+            unawaited(contextApi.enter());
+          } else if (event.click.isAlphabet) {
+            final content = Content();
+            if (!inputStatus.shifted) {
+              content.text = event.click.keyLabel.toLowerCase();
+              unawaited(contextApi.commit(content));
+            } else {
+              content.text = event.click.keyLabel;
+              unawaited(contextApi.commit(content));
+            }
+          } else if (event.click.isNormalChar) {
+            final content = Content()
+              ..text = event.click.keyLabel.toLowerCase();
             unawaited(contextApi.commit(content));
           }
-        } else if (event.click.keyId >= LogicalKeyboardKey.exclamation.keyId &&
-            event.click.keyId <= LogicalKeyboardKey.tilde.keyId) {
-          final content = Content()..text = event.click.keyLabel.toLowerCase();
-          unawaited(contextApi.commit(content));
+          if (inputStatus.shifted) inputStatus.shifted = false;
         }
       } else if (event.type == EventType.operation) {
         switch (event.operation) {

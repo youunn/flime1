@@ -19,7 +19,7 @@ class KeyboardView extends StatelessWidget {
         ),
         Provider<InputService>(
           create: (_) => InputService()
-            ..engine.setSchemaAsync(Schemas.getDefaultSchemaAsync()),
+            ..engine.setSchemaAsync(getDefaultSchemaAsync()),
         ),
         ProxyProvider<InputService, InputStatus>(
           update: (_, service, __) => InputStatus(service),

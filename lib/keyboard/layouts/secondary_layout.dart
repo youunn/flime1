@@ -14,7 +14,7 @@ class SecondaryLayout extends StatelessWidget {
           height: 200,
           child: InkWell(
             onTap: () {
-              context.router.replace(PrimaryRoute());
+              context.router.replace(const PrimaryRoute());
             },
             child: const Center(
               child: Text('Back'),

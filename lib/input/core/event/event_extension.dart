@@ -3,13 +3,11 @@ import 'package:flutter/services.dart';
 
 extension LogicalKeyboardKeyParsing on LogicalKeyboardKey {
   KeyType get type {
-    if (isDigit) {
-      return KeyType.digit;
-    }
-    if (isAlphabet) {
-      return KeyType.alphabet;
-    }
+    if (isDigit) return KeyType.digit;
+    if (isAlphabet) return KeyType.alphabet;
+    if (isSymbol) return KeyType.symbol;
     if (isSpace) return KeyType.space;
+    if (isNormalChar) return KeyType.normal;
     if (isBackspace) return KeyType.backspace;
     if (isEnter) return KeyType.enter;
     return KeyType.other;
@@ -21,7 +19,16 @@ extension LogicalKeyboardKeyParsing on LogicalKeyboardKey {
   bool get isAlphabet =>
       this >= LogicalKeyboardKey.keyA && this <= LogicalKeyboardKey.keyZ;
 
+  bool get isSymbol =>
+      this >= LogicalKeyboardKey.exclamation &&
+      this <= LogicalKeyboardKey.tilde &&
+      !isDigit &&
+      !isAlphabet;
+
   bool get isSpace => this == LogicalKeyboardKey.space;
+
+  bool get isNormalChar =>
+      this >= LogicalKeyboardKey.space && this <= LogicalKeyboardKey.tilde;
 
   bool get isBackspace => this == LogicalKeyboardKey.backspace;
 
@@ -40,7 +47,17 @@ extension LogicalKeyboardKeyParsing on LogicalKeyboardKey {
   bool operator >(LogicalKeyboardKey other) => keyId.compareTo(other.keyId) > 0;
 }
 
-enum KeyType { alphabet, digit, space, backspace, enter, shift, other }
+enum KeyType {
+  alphabet,
+  digit,
+  symbol,
+  normal,
+  space,
+  backspace,
+  enter,
+  shift,
+  other,
+}
 
 extension SingleActivatorParsing on SingleActivator {
   int get modifiers {

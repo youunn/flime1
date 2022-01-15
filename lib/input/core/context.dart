@@ -50,19 +50,19 @@ class Context {
     await _onChange();
   }
 
-  bool commit(int index) {
+  Future<bool> commitAt(int index) async {
     if (index < 0 || _candidates.length <= index) {
       return false;
     }
     _onCommit(_candidates[index]);
-    clear();
+    await clear();
     return true;
   }
 
-  bool commitCurrent() => commit(0);
+  Future<bool> commitCurrent() async => commitAt(0);
 
-  void commitDirectly(String text) {
+  Future<void> commitDirectly(String text) async {
     _onCommit(text);
-    clear();
+    await clear();
   }
 }

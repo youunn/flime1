@@ -30,17 +30,16 @@ class Editor extends PreFilter {
           return PreFilterResult.denied;
         }
 
-        if (event.click.isSpace) {
-          if (engine.context.hasCandidates) {
-            engine.context.commitCurrent();
+        if (event.click.isEnter) {
+          if (engine.context.input.isNotEmpty) {
+            await engine.context.commitDirectly(engine.context.input);
             return PreFilterResult.finish;
-          } else if (engine.context.input.isEmpty) {
+          } else {
             return PreFilterResult.denied;
           }
         }
 
-        // TODO: or is symbol
-        if (event.click.isAlphabet) {
+        if (event.click.isNormalChar) {
           return PreFilterResult.pass;
         }
 
@@ -55,7 +54,6 @@ class Editor extends PreFilter {
     if (event.type == EventType.click &&
         (event.click.isEnter ||
             event.click.isBackspace ||
-            event.click.isSpace ||
             event.click.isShift)) {
       return PreFilterResult.denied;
     } else {
