@@ -8,7 +8,7 @@ class Constraint = _Constraint with _$Constraint;
 
 abstract class _Constraint with Store {
   @observable
-  double baseHeight = 38;
+  double baseHeight = 30;
   @readonly
   double _height = 192;
   @readonly

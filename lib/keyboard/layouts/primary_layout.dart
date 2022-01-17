@@ -1,20 +1,12 @@
-import 'dart:async';
-
-import 'package:flime/api/api.dart';
 import 'package:flime/input/core/event/event.dart';
-import 'package:flime/input/core/event/event_extension.dart';
 import 'package:flime/input/schemas/commands.dart';
-import 'package:flime/keyboard/api/apis.dart';
 import 'package:flime/keyboard/basic/operations.dart';
 import 'package:flime/keyboard/basic/preset.dart';
 import 'package:flime/keyboard/router/router.gr.dart';
-import 'package:flime/keyboard/services/input_service.dart';
-import 'package:flime/keyboard/stores/input_status.dart';
 import 'package:flime/keyboard/widgets/preset_builder.dart';
 import 'package:flime/keyboard/widgets/preset_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 typedef Ke = KEvent;
 typedef Lk = LogicalKeyboardKey;
@@ -27,76 +19,34 @@ class PrimaryLayout extends StatelessWidget {
     return PresetBuilder(
       child: PresetLayout(
         preset: _preset,
-        onKey: (event) => _onKey(event, context),
+        onKey: (event) => onKey(
+          event,
+          context,
+          onOperation: (operation) async {
+            switch (event.operation) {
+              case Operation.switchLayout:
+                await switchLayout(
+                  context,
+                  const SecondaryRoute(),
+                );
+                break;
+              default:
+                break;
+            }
+          },
+        ),
       ),
     );
   }
 
-  static Future<void> _onKey(KEvent event, BuildContext context) async {
-    final inputStatus = context.read<InputStatus>();
-    final service = context.read<InputService>();
-    final contextApi = scopedContextApi;
-
-    bool result;
-    if (inputStatus.shifted &&
-        event.type == EventType.click &&
-        event.click != LogicalKeyboardKey.shift) {
-      result = await service.onKey(
-        KEvent.combo(SingleActivator(event.click, shift: true)),
-      );
-    } else {
-      result = await service.onKey(event);
-    }
-    if (result) {
-      if (service.commitText != '') {
-        unawaited(
-          contextApi.commit(Content()..text = service.popCommitText()),
-        );
-      }
-      if (event.type == EventType.click &&
-          event.click == LogicalKeyboardKey.shift) {
-        inputStatus.shifted = !inputStatus.shifted;
-      }
-    } else {
-      if (event.type == EventType.click) {
-        if (event.click.isShift) {
-          inputStatus.shifted = !inputStatus.shifted;
-        } else {
-          if (event.click.isBackspace) {
-            unawaited(contextApi.delete());
-          } else if (event.click.isEnter) {
-            unawaited(contextApi.enter());
-          } else if (event.click.isAlphabet) {
-            final content = Content();
-            if (!inputStatus.shifted) {
-              content.text = event.click.keyLabel.toLowerCase();
-              unawaited(contextApi.commit(content));
-            } else {
-              content.text = event.click.keyLabel;
-              unawaited(contextApi.commit(content));
-            }
-          } else if (event.click.isNormalChar) {
-            final content = Content()
-              ..text = event.click.keyLabel.toLowerCase();
-            unawaited(contextApi.commit(content));
-          }
-          if (inputStatus.shifted) inputStatus.shifted = false;
-        }
-      } else if (event.type == EventType.operation) {
-        switch (event.operation) {
-          case Operation.switchLayout:
-            await switchLayout(
-              context,
-              const SecondaryRoute(),
-            );
-            break;
-          default:
-            break;
-        }
-      }
-    }
-  }
-
+  // q w e r t y u i o p
+  //  a s d f g h j k l
+  //  S z x c v b n m B
+  //  1 ,   . E
+  //
+  // 1 2 3 4 5 6 7 8 9 0
+  //  ! _ - = + ' " ; :
+  //    z x c v \ ? /
   static final _preset = Preset(
     width: 0.1,
     height: 76,
@@ -104,60 +54,69 @@ class PrimaryLayout extends StatelessWidget {
     ..r(
       // 第一行
       (r) => r
-        ..c(Lk.keyQ, longClick: KEvent.click(LogicalKeyboardKey.digit1))
-        ..c(Lk.keyW, longClick: KEvent.click(LogicalKeyboardKey.digit2))
-        ..c(Lk.keyE, longClick: KEvent.click(LogicalKeyboardKey.digit3))
-        ..c(Lk.keyR, longClick: KEvent.click(LogicalKeyboardKey.digit4))
-        ..c(Lk.keyT, longClick: KEvent.click(LogicalKeyboardKey.digit5))
-        ..c(Lk.keyY, longClick: KEvent.click(LogicalKeyboardKey.digit6))
-        ..c(Lk.keyU, longClick: KEvent.click(LogicalKeyboardKey.digit7))
-        ..c(Lk.keyI, longClick: KEvent.click(LogicalKeyboardKey.digit8))
-        ..c(Lk.keyO, longClick: KEvent.click(LogicalKeyboardKey.digit9))
-        ..c(Lk.keyP, longClick: KEvent.click(LogicalKeyboardKey.digit0)),
+        ..c(Lk.keyQ, longClick: KEvent.click(Lk.digit1))
+        ..c(Lk.keyW, longClick: KEvent.click(Lk.digit2))
+        ..c(Lk.keyE, longClick: KEvent.click(Lk.digit3))
+        ..c(Lk.keyR, longClick: KEvent.click(Lk.digit4))
+        ..c(Lk.keyT, longClick: KEvent.click(Lk.digit5))
+        ..c(Lk.keyY, longClick: KEvent.click(Lk.digit6))
+        ..c(Lk.keyU, longClick: KEvent.click(Lk.digit7))
+        ..c(Lk.keyI, longClick: KEvent.click(Lk.digit8))
+        ..c(Lk.keyO, longClick: KEvent.click(Lk.digit9))
+        ..c(Lk.keyP, longClick: KEvent.click(Lk.digit0)),
     )
     ..r(
       // 第二行
       (r) => r
-        ..c(Lk.keyA, label: '', width: 0.05)
-        ..c(Lk.keyA)
-        ..c(Lk.keyS)
-        ..c(Lk.keyD)
-        ..c(Lk.keyF)
-        ..c(Lk.keyG)
-        ..c(Lk.keyH)
-        ..c(Lk.keyJ)
-        ..c(Lk.keyK)
-        ..c(Lk.keyL)
-        ..c(Lk.keyL, label: '', width: 0.05),
+        ..c(
+          Lk.keyA,
+          longClick: KEvent.click(Lk.exclamation),
+          label: '',
+          width: 0.05,
+        )
+        ..c(Lk.keyA, longClick: KEvent.click(Lk.exclamation))
+        ..c(Lk.keyS, longClick: KEvent.click(Lk.minus))
+        ..c(Lk.keyD, longClick: KEvent.click(Lk.underscore))
+        ..c(Lk.keyF, longClick: KEvent.click(Lk.equal))
+        ..c(Lk.keyG, longClick: KEvent.click(Lk.add))
+        ..c(Lk.keyH, longClick: KEvent.click(Lk.quoteSingle))
+        ..c(Lk.keyJ, longClick: KEvent.click(Lk.quote))
+        ..c(Lk.keyK, longClick: KEvent.click(Lk.semicolon))
+        ..c(Lk.keyL, longClick: KEvent.click(Lk.colon))
+        ..c(
+          Lk.keyL,
+          longClick: KEvent.click(Lk.colon),
+          label: '',
+          width: 0.05,
+        ),
     )
     ..r(
       // 第三行
       (r) => r
         ..c(Lk.shift, width: 0.15)
-        ..c(Lk.keyZ)
-        ..c(Lk.keyX)
-        ..c(Lk.keyC)
-        ..c(Lk.keyV)
-        ..c(Lk.keyB)
-        ..c(Lk.keyN)
-        ..c(Lk.keyM)
-        ..c(Lk.backspace, width: 0.15, repeatable: true),
+        ..c(Lk.keyZ) // TODO: C-A
+        ..c(Lk.keyX) // TODO: C-X
+        ..c(Lk.keyC) // TODO: C-C
+        ..c(Lk.keyV) // TODO: C-V
+        ..c(Lk.keyB, longClick: KEvent.click(Lk.backslash))
+        ..c(Lk.keyN, longClick: KEvent.click(Lk.question))
+        ..c(Lk.keyM, longClick: KEvent.click(Lk.slash))
+        ..c(Lk.backspace, label: 'Bs', width: 0.15, repeatable: true),
     )
     ..r(
       // 第四行
       (r) => r
-        ..k(Ke.operation(Operation.switchLayout), label: 'L2', width: 0.09)
-        ..k(Ke.command(switchAsciiMode), label: 'ZH/EN', width: 0.09)
+        ..k(Ke.operation(Operation.switchLayout), label: 'L2', width: 0.18)
         ..c(
           Lk.comma,
-          width: 0.18,
           composing: KEvent.click(LogicalKeyboardKey.digit3),
+          width: 0.18,
         )
-        ..c(Lk.space, width: 0.34)
+        ..c(Lk.space, longClick: Ke.command(switchAsciiMode), width: 0.34)
         ..c(
           Lk.period,
-          width: 0.14,
           composing: KEvent.click(LogicalKeyboardKey.digit2),
+          width: 0.14,
         )
         ..c(Lk.enter, width: 0.16),
       height: 92,
