@@ -48,6 +48,11 @@ class KeyboardRow extends Iterable<K> {
     String? label,
     double? width,
     double? height,
+    KEvent? longClick,
+    KEvent? swipe,
+    KEvent? ascii,
+    KEvent? composing,
+    bool repeatable = false,
   }) {
     final key = K(
       height: height ?? this.height,
@@ -55,6 +60,11 @@ class KeyboardRow extends Iterable<K> {
       preset: preset,
       click: click,
       label: label,
+      longClick: longClick,
+      swipe: swipe,
+      ascii: ascii,
+      composing: composing,
+      repeatable: repeatable,
     );
     keys.add(key);
   }
@@ -64,6 +74,11 @@ class KeyboardRow extends Iterable<K> {
     String? label,
     double? width,
     double? height,
+    KEvent? longClick,
+    KEvent? swipe,
+    KEvent? ascii,
+    KEvent? composing,
+    bool repeatable = false,
   }) {
     final key = K(
       height: height ?? this.height,
@@ -71,6 +86,11 @@ class KeyboardRow extends Iterable<K> {
       preset: preset,
       click: KEvent.click(click),
       label: label,
+      longClick: longClick,
+      swipe: swipe,
+      ascii: ascii,
+      composing: composing,
+      repeatable: repeatable,
     );
     keys.add(key);
   }

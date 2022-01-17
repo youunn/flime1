@@ -104,16 +104,16 @@ class PrimaryLayout extends StatelessWidget {
     ..r(
       // 第一行
       (r) => r
-        ..c(Lk.keyQ)
-        ..c(Lk.keyW)
-        ..c(Lk.keyE)
-        ..c(Lk.keyR)
-        ..c(Lk.keyT)
-        ..c(Lk.keyY)
-        ..c(Lk.keyU)
-        ..c(Lk.keyI)
-        ..c(Lk.keyO)
-        ..c(Lk.keyP),
+        ..c(Lk.keyQ, longClick: KEvent.click(LogicalKeyboardKey.digit1))
+        ..c(Lk.keyW, longClick: KEvent.click(LogicalKeyboardKey.digit2))
+        ..c(Lk.keyE, longClick: KEvent.click(LogicalKeyboardKey.digit3))
+        ..c(Lk.keyR, longClick: KEvent.click(LogicalKeyboardKey.digit4))
+        ..c(Lk.keyT, longClick: KEvent.click(LogicalKeyboardKey.digit5))
+        ..c(Lk.keyY, longClick: KEvent.click(LogicalKeyboardKey.digit6))
+        ..c(Lk.keyU, longClick: KEvent.click(LogicalKeyboardKey.digit7))
+        ..c(Lk.keyI, longClick: KEvent.click(LogicalKeyboardKey.digit8))
+        ..c(Lk.keyO, longClick: KEvent.click(LogicalKeyboardKey.digit9))
+        ..c(Lk.keyP, longClick: KEvent.click(LogicalKeyboardKey.digit0)),
     )
     ..r(
       // 第二行
@@ -141,16 +141,24 @@ class PrimaryLayout extends StatelessWidget {
         ..c(Lk.keyB)
         ..c(Lk.keyN)
         ..c(Lk.keyM)
-        ..c(Lk.backspace, width: 0.15),
+        ..c(Lk.backspace, width: 0.15, repeatable: true),
     )
     ..r(
       // 第四行
       (r) => r
         ..k(Ke.operation(Operation.switchLayout), label: 'L2', width: 0.09)
         ..k(Ke.command(switchAsciiMode), label: 'ZH/EN', width: 0.09)
-        ..c(Lk.comma, width: 0.18)
+        ..c(
+          Lk.comma,
+          width: 0.18,
+          composing: KEvent.click(LogicalKeyboardKey.digit3),
+        )
         ..c(Lk.space, width: 0.34)
-        ..c(Lk.period, width: 0.14)
+        ..c(
+          Lk.period,
+          width: 0.14,
+          composing: KEvent.click(LogicalKeyboardKey.digit2),
+        )
         ..c(Lk.enter, width: 0.16),
       height: 92,
     );

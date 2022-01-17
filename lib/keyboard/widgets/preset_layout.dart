@@ -2,6 +2,8 @@ import 'package:flime/input/core/event/event.dart';
 import 'package:flime/keyboard/basic/preset.dart';
 import 'package:flutter/material.dart';
 
+import 'key_inkwell.dart';
+
 class PresetLayout extends StatelessWidget {
   final Preset preset;
   final void Function(KEvent) onKey;
@@ -24,17 +26,10 @@ class PresetLayout extends StatelessWidget {
               child: Row(
                 children: [
                   for (var k in r)
-                    SizedBox(
-                      width: width * k.width,
-                      child: InkWell(
-                        // 暂时只处理单击
-                        onTap: () {
-                          onKey(k.click);
-                        },
-                        child: Center(
-                          child: Text(k.label),
-                        ),
-                      ),
+                    KeyInkwell(
+                      k: k,
+                      width: width,
+                      onKey: onKey,
                     ),
                 ],
               ),

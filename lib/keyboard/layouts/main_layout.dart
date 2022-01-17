@@ -11,32 +11,28 @@ class MainLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constraint = context.read<Constraint>();
+    final inputStatus = context.read<InputStatus>();
 
-    return Consumer<InputStatus>(
-      builder: (context, inputStatus, child) => Observer(
-        builder: (context) {
-          return Container(
-            height: constraint.height,
-            color: Colors.white,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: constraint.baseHeight,
-                  child: Center(
-                    child: Text(
-                      inputStatus.candidates.take(3).toString(),
-                      style: const TextStyle(fontSize: 10),
-                    ),
-                  ),
+    return Container(
+      height: constraint.height,
+      color: Colors.white,
+      child: Column(
+        children: [
+          SizedBox(
+            height: constraint.baseHeight,
+            child: Center(
+              child: Observer(
+                builder: (_) => Text(
+                  inputStatus.candidates.take(3).toString(),
+                  style: const TextStyle(fontSize: 10),
                 ),
-                if (child != null) child,
-              ],
+              ),
             ),
-          );
-        },
-      ),
-      child: const Expanded(
-        child: AutoRouter(),
+          ),
+          const Expanded(
+            child: AutoRouter(),
+          ),
+        ],
       ),
     );
   }

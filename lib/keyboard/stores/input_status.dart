@@ -31,4 +31,7 @@ abstract class _InputStatus with Store {
     );
     input = _inputService.input;
   }
+
+  @computed
+  bool get isComposing => candidates.isNotEmpty;
 }

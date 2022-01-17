@@ -9,6 +9,14 @@ part of 'input_status.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$InputStatus on _InputStatus, Store {
+  Computed<bool>? _$isComposingComputed;
+
+  @override
+  bool get isComposing =>
+      (_$isComposingComputed ??= Computed<bool>(() => super.isComposing,
+              name: '_InputStatus.isComposing'))
+          .value;
+
   final _$candidatesAtom = Atom(name: '_InputStatus.candidates');
 
   @override
@@ -72,7 +80,8 @@ mixin _$InputStatus on _InputStatus, Store {
     return '''
 candidates: ${candidates},
 input: ${input},
-shifted: ${shifted}
+shifted: ${shifted},
+isComposing: ${isComposing}
     ''';
   }
 }

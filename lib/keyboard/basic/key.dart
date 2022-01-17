@@ -17,6 +17,7 @@ class K {
   final KEvent? swipe;
   final KEvent? ascii;
   final KEvent? composing;
+  final bool repeatable;
 
   K({
     required this.height,
@@ -28,8 +29,10 @@ class K {
     this.swipe,
     this.ascii,
     this.composing,
+    this.repeatable = false,
   })  : assert(width >= 0 && width <= 1),
-        assert(height >= 0) {
+        assert(height >= 0),
+        assert(longClick == null || repeatable == false) {
     this.label = label ?? click.parseLabel();
   }
 }
