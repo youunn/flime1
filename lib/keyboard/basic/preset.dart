@@ -1,4 +1,5 @@
 import 'package:flime/input/core/event/event.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'key.dart';
@@ -6,11 +7,13 @@ import 'key.dart';
 class Preset extends Iterable<KeyboardRow> {
   final double width;
   final double height;
+  final double fontSize;
   final rows = <KeyboardRow>[];
 
   Preset({
     required this.width,
     required this.height,
+    required this.fontSize,
   })  : assert(width >= 0 && width <= 1),
         assert(height >= 0);
 
@@ -52,6 +55,7 @@ class KeyboardRow extends Iterable<K> {
     KEvent? swipe,
     KEvent? ascii,
     KEvent? composing,
+    IconData? iconData,
     bool repeatable = false,
   }) {
     final key = K(
@@ -64,6 +68,7 @@ class KeyboardRow extends Iterable<K> {
       swipe: swipe,
       ascii: ascii,
       composing: composing,
+      iconData: iconData,
       repeatable: repeatable,
     );
     keys.add(key);
@@ -78,6 +83,7 @@ class KeyboardRow extends Iterable<K> {
     KEvent? swipe,
     KEvent? ascii,
     KEvent? composing,
+    IconData? iconData,
     bool repeatable = false,
   }) {
     final key = K(
@@ -90,6 +96,7 @@ class KeyboardRow extends Iterable<K> {
       swipe: swipe,
       ascii: ascii,
       composing: composing,
+      iconData: iconData,
       repeatable: repeatable,
     );
     keys.add(key);

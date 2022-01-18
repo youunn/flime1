@@ -1,5 +1,6 @@
 import 'package:flime/input/core/event/event.dart';
 import 'package:flime/keyboard/basic/preset.dart';
+import 'package:flutter/material.dart';
 
 class K {
   /// 高，单位dpr。
@@ -17,6 +18,7 @@ class K {
   final KEvent? swipe;
   final KEvent? ascii;
   final KEvent? composing;
+  final IconData? iconData;
   final bool repeatable;
 
   K({
@@ -29,6 +31,7 @@ class K {
     this.swipe,
     this.ascii,
     this.composing,
+    this.iconData,
     this.repeatable = false,
   })  : assert(width >= 0 && width <= 1),
         assert(height >= 0),

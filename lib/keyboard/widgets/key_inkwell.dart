@@ -33,7 +33,17 @@ class _KeyInkwellState extends State<KeyInkwell> {
         // 内层手势优先级高
         child: InkWell(
           child: Center(
-            child: Text(widget.k.label),
+            child: widget.k.iconData == null
+                ? Text(
+                    widget.k.label.toLowerCase(),
+                    style: TextStyle(
+                      fontSize: widget.k.preset.fontSize,
+                    ),
+                  )
+                : Icon(
+                    widget.k.iconData,
+                    size: widget.k.preset.fontSize,
+                  ),
           ),
           onTap: () {
             if (context.read<InputStatus>().isComposing) {
@@ -52,8 +62,8 @@ class _KeyInkwellState extends State<KeyInkwell> {
             (LongPressGestureRecognizer instance) {
               instance
                 ..onLongPress = () async {
-                  _isPressed = true;
                   if (widget.k.repeatable) {
+                    _isPressed = true;
                     while (_isPressed) {
                       widget.onKey(widget.k.click);
                       await Future.delayed(const Duration(milliseconds: 50));
@@ -65,9 +75,11 @@ class _KeyInkwellState extends State<KeyInkwell> {
                   }
                 }
                 ..onLongPressEnd = (_) async {
-                  setState(() {
-                    _isPressed = false;
-                  });
+                  if (_isPressed) {
+                    setState(() {
+                      _isPressed = false;
+                    });
+                  }
                 };
             },
           ),

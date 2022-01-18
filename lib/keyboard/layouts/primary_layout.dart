@@ -49,7 +49,8 @@ class PrimaryLayout extends StatelessWidget {
   //    z x c v \ ? /
   static final _preset = Preset(
     width: 0.1,
-    height: 76,
+    height: 60,
+    fontSize: 22,
   )
     ..r(
       // 第一行
@@ -93,7 +94,7 @@ class PrimaryLayout extends StatelessWidget {
     ..r(
       // 第三行
       (r) => r
-        ..c(Lk.shift, width: 0.15)
+        ..c(Lk.shift, iconData: Icons.keyboard_capslock_outlined, width: 0.15)
         ..c(Lk.keyZ) // TODO: C-A
         ..c(Lk.keyX) // TODO: C-X
         ..c(Lk.keyC) // TODO: C-C
@@ -101,12 +102,24 @@ class PrimaryLayout extends StatelessWidget {
         ..c(Lk.keyB, longClick: KEvent.click(Lk.backslash))
         ..c(Lk.keyN, longClick: KEvent.click(Lk.question))
         ..c(Lk.keyM, longClick: KEvent.click(Lk.slash))
-        ..c(Lk.backspace, label: 'Bs', width: 0.15, repeatable: true),
+        ..c(
+          Lk.backspace,
+          label: 'Bs',
+          iconData: Icons.backspace_outlined,
+          width: 0.15,
+          repeatable: true,
+        ),
     )
     ..r(
       // 第四行
       (r) => r
-        ..k(Ke.operation(Operation.switchLayout), label: 'L2', width: 0.18)
+        ..k(
+          Ke.operation(Operation.switchLayout),
+          label: 'L2',
+          // TODO: replace with onetwothree after flutter 2.10
+          iconData: Icons.pin_outlined,
+          width: 0.18,
+        )
         ..c(
           Lk.comma,
           composing: KEvent.click(LogicalKeyboardKey.digit3),
@@ -118,7 +131,7 @@ class PrimaryLayout extends StatelessWidget {
           composing: KEvent.click(LogicalKeyboardKey.digit2),
           width: 0.14,
         )
-        ..c(Lk.enter, width: 0.16),
-      height: 92,
+        ..c(Lk.enter, iconData: Icons.keyboard_return_outlined, width: 0.16),
+      height: 72,
     );
 }

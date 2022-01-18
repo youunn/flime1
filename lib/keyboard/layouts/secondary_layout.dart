@@ -44,7 +44,8 @@ class SecondaryLayout extends StatelessWidget {
   //    , . \ ? /     E
   static final _preset = Preset(
     width: 0.1,
-    height: 76,
+    height: 60,
+    fontSize: 22,
   )
     ..r(
       // 第一行
@@ -86,19 +87,30 @@ class SecondaryLayout extends StatelessWidget {
         ..c(Lk.braceLeft)
         ..c(Lk.braceRight)
         ..c(Lk.bar)
-        ..c(Lk.backspace, label: 'Bs', width: 0.15, repeatable: true),
+        ..c(
+          Lk.backspace,
+          label: 'Bs',
+          iconData: Icons.backspace_outlined,
+          width: 0.15,
+          repeatable: true,
+        ),
     )
     ..r(
       // 第四行
       (r) => r
-        ..k(Ke.operation(Operation.switchLayout), label: 'L1', width: 0.18)
+        ..k(
+          Ke.operation(Operation.switchLayout),
+          label: 'L1',
+          iconData: Icons.pin_outlined,
+          width: 0.18,
+        )
         ..c(Lk.comma)
         ..c(Lk.period)
         ..c(Lk.backslash)
-        ..c(Lk.question)
         ..c(Lk.slash)
+        ..c(Lk.question)
         ..c(Lk.space, width: 0.16)
-        ..c(Lk.enter, width: 0.16),
-      height: 92,
+        ..c(Lk.enter, iconData: Icons.keyboard_return_outlined, width: 0.16),
+      height: 72,
     );
 }
