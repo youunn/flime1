@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 
 typedef Ke = KEvent;
 typedef Lk = LogicalKeyboardKey;
+typedef Sa = SingleActivator;
 
 class PrimaryLayout extends StatelessWidget {
   const PrimaryLayout({Key? key}) : super(key: key);
@@ -56,38 +57,38 @@ class PrimaryLayout extends StatelessWidget {
     ..r(
       // 第一行
       (r) => r
-        ..c(Lk.keyQ, longClick: KEvent.click(Lk.digit1))
-        ..c(Lk.keyW, longClick: KEvent.click(Lk.digit2))
-        ..c(Lk.keyE, longClick: KEvent.click(Lk.digit3))
-        ..c(Lk.keyR, longClick: KEvent.click(Lk.digit4))
-        ..c(Lk.keyT, longClick: KEvent.click(Lk.digit5))
-        ..c(Lk.keyY, longClick: KEvent.click(Lk.digit6))
-        ..c(Lk.keyU, longClick: KEvent.click(Lk.digit7))
-        ..c(Lk.keyI, longClick: KEvent.click(Lk.digit8))
-        ..c(Lk.keyO, longClick: KEvent.click(Lk.digit9))
-        ..c(Lk.keyP, longClick: KEvent.click(Lk.digit0)),
+        ..c(Lk.keyQ, longClick: Ke.click(Lk.digit1))
+        ..c(Lk.keyW, longClick: Ke.click(Lk.digit2))
+        ..c(Lk.keyE, longClick: Ke.click(Lk.digit3))
+        ..c(Lk.keyR, longClick: Ke.click(Lk.digit4))
+        ..c(Lk.keyT, longClick: Ke.click(Lk.digit5))
+        ..c(Lk.keyY, longClick: Ke.click(Lk.digit6))
+        ..c(Lk.keyU, longClick: Ke.click(Lk.digit7))
+        ..c(Lk.keyI, longClick: Ke.click(Lk.digit8))
+        ..c(Lk.keyO, longClick: Ke.click(Lk.digit9))
+        ..c(Lk.keyP, longClick: Ke.click(Lk.digit0)),
     )
     ..r(
       // 第二行
       (r) => r
         ..c(
           Lk.keyA,
-          longClick: KEvent.click(Lk.exclamation),
+          longClick: Ke.click(Lk.exclamation),
           label: '',
           width: 0.05,
         )
-        ..c(Lk.keyA, longClick: KEvent.click(Lk.exclamation))
-        ..c(Lk.keyS, longClick: KEvent.click(Lk.minus))
-        ..c(Lk.keyD, longClick: KEvent.click(Lk.underscore))
-        ..c(Lk.keyF, longClick: KEvent.click(Lk.equal))
-        ..c(Lk.keyG, longClick: KEvent.click(Lk.add))
-        ..c(Lk.keyH, longClick: KEvent.click(Lk.quoteSingle))
-        ..c(Lk.keyJ, longClick: KEvent.click(Lk.quote))
-        ..c(Lk.keyK, longClick: KEvent.click(Lk.semicolon))
-        ..c(Lk.keyL, longClick: KEvent.click(Lk.colon))
+        ..c(Lk.keyA, longClick: Ke.click(Lk.exclamation))
+        ..c(Lk.keyS, longClick: Ke.click(Lk.minus))
+        ..c(Lk.keyD, longClick: Ke.click(Lk.underscore))
+        ..c(Lk.keyF, longClick: Ke.click(Lk.equal))
+        ..c(Lk.keyG, longClick: Ke.click(Lk.add))
+        ..c(Lk.keyH, longClick: Ke.click(Lk.quoteSingle))
+        ..c(Lk.keyJ, longClick: Ke.click(Lk.quote))
+        ..c(Lk.keyK, longClick: Ke.click(Lk.semicolon))
+        ..c(Lk.keyL, longClick: Ke.click(Lk.colon))
         ..c(
           Lk.keyL,
-          longClick: KEvent.click(Lk.colon),
+          longClick: Ke.click(Lk.colon),
           label: '',
           width: 0.05,
         ),
@@ -96,13 +97,13 @@ class PrimaryLayout extends StatelessWidget {
       // 第三行
       (r) => r
         ..c(Lk.shift, iconData: Icons.keyboard_capslock_outlined, width: 0.15)
-        ..c(Lk.keyZ) // TODO: C-A
-        ..c(Lk.keyX) // TODO: C-X
-        ..c(Lk.keyC) // TODO: C-C
-        ..c(Lk.keyV) // TODO: C-V
-        ..c(Lk.keyB, longClick: KEvent.click(Lk.backslash))
-        ..c(Lk.keyN, longClick: KEvent.click(Lk.question))
-        ..c(Lk.keyM, longClick: KEvent.click(Lk.slash))
+        ..c(Lk.keyZ, longClick: Ke.combo(const Sa(Lk.keyA, control: true)))
+        ..c(Lk.keyX, longClick: Ke.combo(const Sa(Lk.keyX, control: true)))
+        ..c(Lk.keyC, longClick: Ke.combo(const Sa(Lk.keyC, control: true)))
+        ..c(Lk.keyV, longClick: Ke.combo(const Sa(Lk.keyV, control: true)))
+        ..c(Lk.keyB, longClick: Ke.click(Lk.backslash))
+        ..c(Lk.keyN, longClick: Ke.click(Lk.question))
+        ..c(Lk.keyM, longClick: Ke.click(Lk.slash))
         ..c(
           Lk.backspace,
           label: 'Bs',
@@ -123,7 +124,7 @@ class PrimaryLayout extends StatelessWidget {
         )
         ..c(
           Lk.comma,
-          composing: KEvent.click(LogicalKeyboardKey.digit3),
+          composing: Ke.click(LogicalKeyboardKey.digit3),
           width: 0.18,
         )
         ..c(
@@ -134,7 +135,7 @@ class PrimaryLayout extends StatelessWidget {
         )
         ..c(
           Lk.period,
-          composing: KEvent.click(LogicalKeyboardKey.digit2),
+          composing: Ke.click(LogicalKeyboardKey.digit2),
           width: 0.14,
         )
         ..c(

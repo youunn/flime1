@@ -10,6 +10,7 @@ extension LogicalKeyboardKeyParsing on LogicalKeyboardKey {
     if (isNormalChar) return KeyType.normal;
     if (isBackspace) return KeyType.backspace;
     if (isEnter) return KeyType.enter;
+    if (isArrow) return KeyType.arrow;
     return KeyType.other;
   }
 
@@ -36,6 +37,10 @@ extension LogicalKeyboardKeyParsing on LogicalKeyboardKey {
 
   bool get isShift => this == LogicalKeyboardKey.shift;
 
+  bool get isArrow =>
+      this >= LogicalKeyboardKey.arrowDown &&
+      this <= LogicalKeyboardKey.arrowUp;
+
   bool operator <=(LogicalKeyboardKey other) =>
       keyId.compareTo(other.keyId) <= 0;
 
@@ -56,6 +61,7 @@ enum KeyType {
   backspace,
   enter,
   shift,
+  arrow,
   other,
 }
 

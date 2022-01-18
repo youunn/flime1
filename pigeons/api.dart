@@ -7,8 +7,8 @@ class Content {
 @HostApi()
 abstract class ContextApi {
   bool commit(Content content);
-  bool delete();
-  bool enter();
+  bool send(String keyLabel);
+  bool sendShortcut(String keyLabel, int modifier);
 }
 
 @HostApi()

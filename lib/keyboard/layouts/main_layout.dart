@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flime/api/api.dart';
 import 'package:flime/input/core/event/event.dart';
+import 'package:flime/input/schemas/commands.dart';
 import 'package:flime/keyboard/api/apis.dart';
 import 'package:flime/keyboard/services/input_service.dart';
 import 'package:flime/keyboard/stores/constraint.dart';
 import 'package:flime/keyboard/stores/input_status.dart';
 import 'package:flime/keyboard/stores/theme.dart';
+import 'package:flime/keyboard/widgets/preset_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -90,24 +92,10 @@ class MainLayout extends StatelessWidget {
         ),
       ),
       Expanded(
-        flex: 1,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 5, bottom: 5),
-            child: TextButton(
-              child: Icon(
-                Icons.expand_more,
-                color: context.read<KeyboardTheme>().darkMode
-                    ? Colors.grey.shade400
-                    : Colors.grey.shade800,
-                size: 18,
-              ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.transparent),
-              ),
-              onPressed: () {},
-            ),
-          ),
+        child: _buildButton(
+          context,
+          iconData: Icons.expand_more,
+          onPressed: () {},
         ),
       ),
     ];
@@ -138,28 +126,42 @@ class MainLayout extends StatelessWidget {
         child: _buildButton(
           context,
           iconData: Icons.g_translate,
-          onPressed: () {},
+          onPressed: () {
+            context.read<InputService>().onKey(KEvent.command(switchAsciiMode));
+          },
         ),
       ),
       Expanded(
         child: _buildButton(
           context,
           iconData: Icons.keyboard_hide,
-          onPressed: () {},
+          onPressed: () {
+            // do nothing
+          },
         ),
       ),
       Expanded(
         child: _buildButton(
           context,
           iconData: Icons.menu_open,
-          onPressed: () {},
+          onPressed: () {
+            onKey(
+              KEvent.click(LogicalKeyboardKey.arrowLeft),
+              context,
+            );
+          },
         ),
       ),
       Expanded(
         child: _buildButton(
           context,
           iconData: Icons.assignment,
-          onPressed: () {},
+          onPressed: () {
+            onKey(
+              KEvent.click(LogicalKeyboardKey.arrowRight),
+              context,
+            );
+          },
         ),
       ),
       Expanded(
@@ -177,23 +179,10 @@ class MainLayout extends StatelessWidget {
         ),
       ),
       Expanded(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 5, bottom: 5),
-            child: TextButton(
-              child: Icon(
-                Icons.mic,
-                color: context.read<KeyboardTheme>().darkMode
-                    ? Colors.grey.shade400
-                    : Colors.grey.shade800,
-                size: 18,
-              ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.transparent),
-              ),
-              onPressed: () {},
-            ),
-          ),
+        child: _buildButton(
+          context,
+          iconData: Icons.mic,
+          onPressed: () {},
         ),
       ),
     ];

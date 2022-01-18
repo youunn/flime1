@@ -56,7 +56,7 @@ class PresetLayout extends StatelessWidget {
 Future<void> onKey(
   KEvent event,
   BuildContext context, {
-  required Function(Operation operation) onOperation,
+  Function(Operation operation)? onOperation,
 }) async {
   final inputStatus = context.read<InputStatus>();
   final service = context.read<InputService>();
@@ -87,10 +87,10 @@ Future<void> onKey(
       if (event.click.isShift) {
         inputStatus.shifted = !inputStatus.shifted;
       } else {
-        if (event.click.isBackspace) {
-          unawaited(contextApi.delete());
-        } else if (event.click.isEnter) {
-          unawaited(contextApi.enter());
+        if (event.click.isBackspace ||
+            event.click.isEnter ||
+            event.click.isArrow) {
+          unawaited(contextApi.send(event.click.keyLabel));
         } else if (event.click.isAlphabet) {
           final content = Content();
           if (!inputStatus.shifted) {
@@ -106,8 +106,14 @@ Future<void> onKey(
         }
         if (inputStatus.shifted) inputStatus.shifted = false;
       }
+    } else if (event.type == EventType.combo) {
+      final k = event.combo.trigger;
+      if (k.isNormalChar) {
+        unawaited(contextApi.sendShortcut(k.keyLabel, Modifiers.control));
+      }
+      if (inputStatus.shifted) inputStatus.shifted = false;
     } else if (event.type == EventType.operation) {
-      onOperation(event.operation);
+      onOperation?.call(event.operation);
     }
   }
 }

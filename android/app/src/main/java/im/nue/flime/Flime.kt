@@ -1,6 +1,9 @@
 package im.nue.flime
 
 import android.inputmethodservice.InputMethodService
+import android.os.SystemClock
+import android.view.InputDevice
+import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -19,22 +22,57 @@ class Flime : InputMethodService() {
         const val SHOW_KEYBOARD_ENTRY_POINT = "showKeyboard"
     }
 
-    inner class ContextApi : Pigeon.ContextApi {
+    class ContextApi(private val service: InputMethodService) : Pigeon.ContextApi {
+
         override fun commit(content: Pigeon.Content?): Boolean {
             content?.let {
-                this@Flime.currentInputConnection.commitText(content.text, 1)
+                service.currentInputConnection.commitText(content.text, 1)
             }
 
             return content != null
         }
 
-        override fun enter(): Boolean {
-            this@Flime.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+        override fun send(keyLabel: String?): Boolean {
+            if (keyLabel == null) return false
+            KeycodeMap[keyLabel]?.also { service.sendDownUpKeyEvents(it) } ?: return false
             return true
         }
 
-        override fun delete(): Boolean {
-            this@Flime.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
+        override fun sendShortcut(keyLabel: String?, modifier: Long?): Boolean {
+            if (keyLabel == null || modifier == null) return false
+            val code = KeycodeMap[keyLabel] ?: return false
+
+            val metaState = KeycodeMap.getMetaState(modifier.toInt())
+            val connection = service.currentInputConnection
+            connection.clearMetaKeyStates(
+                KeyEvent.META_FUNCTION_ON
+                        or KeyEvent.META_SHIFT_MASK
+                        or KeyEvent.META_ALT_MASK
+                        or KeyEvent.META_CTRL_MASK
+                        or KeyEvent.META_META_MASK
+                        or KeyEvent.META_SYM_ON
+            )
+            connection.beginBatchEdit()
+            val eventTime = SystemClock.uptimeMillis()
+
+            for (action in listOf(KeyEvent.ACTION_DOWN, KeyEvent.ACTION_UP)) {
+                service.currentInputConnection.sendKeyEvent(
+                    KeyEvent(
+                        eventTime,
+                        SystemClock.uptimeMillis(),
+                        action,
+                        code,
+                        0,
+                        metaState,
+                        KeyCharacterMap.VIRTUAL_KEYBOARD,
+                        0,
+                        KeyEvent.FLAG_SOFT_KEYBOARD or KeyEvent.FLAG_KEEP_TOUCH_MODE,
+                        InputDevice.SOURCE_KEYBOARD
+                    )
+                )
+            }
+            connection.endBatchEdit()
+
             return true
         }
     }
@@ -51,7 +89,7 @@ class Flime : InputMethodService() {
             )
         )
         engine.serviceControlSurface.attachToService(this, null, true)
-        Pigeon.ContextApi.setup(engine.dartExecutor.binaryMessenger, ContextApi())
+        Pigeon.ContextApi.setup(engine.dartExecutor.binaryMessenger, ContextApi(this))
 
         flutterView = WrapFlutterView(engine, this)
         flutterView.attachToFlutterEngine(engine)
