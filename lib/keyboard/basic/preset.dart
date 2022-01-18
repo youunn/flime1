@@ -1,8 +1,8 @@
 import 'package:flime/input/core/event/event.dart';
+import 'package:flime/keyboard/basic/highlights.dart';
+import 'package:flime/keyboard/basic/key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'key.dart';
 
 class Preset extends Iterable<KeyboardRow> {
   final double width;
@@ -56,6 +56,7 @@ class KeyboardRow extends Iterable<K> {
     KEvent? ascii,
     KEvent? composing,
     IconData? iconData,
+    Highlight? highlight,
     bool repeatable = false,
   }) {
     final key = K(
@@ -69,6 +70,7 @@ class KeyboardRow extends Iterable<K> {
       ascii: ascii,
       composing: composing,
       iconData: iconData,
+      highlight: highlight,
       repeatable: repeatable,
     );
     keys.add(key);
@@ -84,6 +86,7 @@ class KeyboardRow extends Iterable<K> {
     KEvent? ascii,
     KEvent? composing,
     IconData? iconData,
+    Highlight? highlight,
     bool repeatable = false,
   }) {
     final key = K(
@@ -97,6 +100,7 @@ class KeyboardRow extends Iterable<K> {
       ascii: ascii,
       composing: composing,
       iconData: iconData,
+      highlight: highlight,
       repeatable: repeatable,
     );
     keys.add(key);

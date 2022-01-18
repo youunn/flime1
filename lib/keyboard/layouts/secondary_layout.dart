@@ -1,4 +1,5 @@
 import 'package:flime/input/core/event/event.dart';
+import 'package:flime/keyboard/basic/highlights.dart';
 import 'package:flime/keyboard/basic/operations.dart';
 import 'package:flime/keyboard/basic/preset.dart';
 import 'package:flime/keyboard/router/router.gr.dart';
@@ -44,8 +45,8 @@ class SecondaryLayout extends StatelessWidget {
   //    , . \ ? /     E
   static final _preset = Preset(
     width: 0.1,
-    height: 60,
-    fontSize: 22,
+    height: 63,
+    fontSize: 26,
   )
     ..r(
       // 第一行
@@ -110,7 +111,12 @@ class SecondaryLayout extends StatelessWidget {
         ..c(Lk.slash)
         ..c(Lk.question)
         ..c(Lk.space, width: 0.16)
-        ..c(Lk.enter, iconData: Icons.keyboard_return_outlined, width: 0.16),
-      height: 72,
+        ..c(
+          Lk.enter,
+          iconData: Icons.keyboard_return_outlined,
+          highlight: Highlight.enter,
+          width: 0.16,
+        ),
+      height: 75,
     );
 }

@@ -1,4 +1,5 @@
 import 'package:flime/input/core/event/event.dart';
+import 'package:flime/keyboard/basic/highlights.dart';
 import 'package:flime/keyboard/basic/preset.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,7 @@ class K {
   final KEvent? ascii;
   final KEvent? composing;
   final IconData? iconData;
+  final Highlight? highlight;
   final bool repeatable;
 
   K({
@@ -27,11 +29,12 @@ class K {
     required this.preset,
     required this.click,
     String? label,
+    this.iconData,
+    this.highlight,
     this.longClick,
     this.swipe,
     this.ascii,
     this.composing,
-    this.iconData,
     this.repeatable = false,
   })  : assert(width >= 0 && width <= 1),
         assert(height >= 0),

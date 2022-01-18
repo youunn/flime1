@@ -5,6 +5,6 @@ enum Operation {
   switchLayout,
 }
 
-  Future<void> switchLayout(BuildContext context, PageRouteInfo route) async {
-    await context.router.replace(route);
-  }
+Future<void> switchLayout(BuildContext context, PageRouteInfo route) async {
+  await context.router.replace(route);
+}

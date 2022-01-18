@@ -8,6 +8,7 @@ import 'package:flime/keyboard/basic/operations.dart';
 import 'package:flime/keyboard/basic/preset.dart';
 import 'package:flime/keyboard/services/input_service.dart';
 import 'package:flime/keyboard/stores/input_status.dart';
+import 'package:flime/keyboard/stores/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,8 @@ class PresetLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Material(
+      color:
+          context.read<KeyboardTheme>().darkMode ? Colors.black : Colors.white,
       child: Column(
         children: [
           for (var r in preset)

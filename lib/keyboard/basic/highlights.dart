@@ -1,0 +1,1 @@
+enum Highlight { space, enter }

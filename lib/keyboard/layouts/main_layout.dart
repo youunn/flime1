@@ -7,6 +7,7 @@ import 'package:flime/keyboard/api/apis.dart';
 import 'package:flime/keyboard/services/input_service.dart';
 import 'package:flime/keyboard/stores/constraint.dart';
 import 'package:flime/keyboard/stores/input_status.dart';
+import 'package:flime/keyboard/stores/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -22,11 +23,11 @@ class MainLayout extends StatelessWidget {
         flex: 1,
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: 3, bottom: 3),
+            padding: const EdgeInsets.only(top: 5, bottom: 5),
             child: ElevatedButton(
-              child: Icon(
+              child: const Icon(
                 Icons.chevron_left,
-                color: Colors.grey.shade800,
+                color: Colors.black,
                 size: 18,
               ),
               style: ButtonStyle(
@@ -49,8 +50,11 @@ class MainLayout extends StatelessWidget {
                   child: Center(
                     child: Text(
                       candidate.value,
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: context.read<KeyboardTheme>().darkMode
+                            ? Colors.grey.shade300
+                            : Colors.black,
                       ),
                     ),
                   ),
@@ -89,11 +93,13 @@ class MainLayout extends StatelessWidget {
         flex: 1,
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: 3, bottom: 3),
+            padding: const EdgeInsets.only(top: 5, bottom: 5),
             child: TextButton(
               child: Icon(
                 Icons.expand_more,
-                color: Colors.grey.shade800,
+                color: context.read<KeyboardTheme>().darkMode
+                    ? Colors.grey.shade400
+                    : Colors.grey.shade800,
                 size: 18,
               ),
               style: ButtonStyle(
@@ -112,7 +118,7 @@ class MainLayout extends StatelessWidget {
       Expanded(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: 3, bottom: 3),
+            padding: const EdgeInsets.only(top: 5, bottom: 5),
             child: ElevatedButton(
               child: const Icon(
                 Icons.chevron_right,
@@ -173,11 +179,13 @@ class MainLayout extends StatelessWidget {
       Expanded(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: 3, bottom: 3),
+            padding: const EdgeInsets.only(top: 5, bottom: 5),
             child: TextButton(
               child: Icon(
                 Icons.mic,
-                color: Colors.grey.shade800,
+                color: context.read<KeyboardTheme>().darkMode
+                    ? Colors.grey.shade400
+                    : Colors.grey.shade800,
                 size: 18,
               ),
               style: ButtonStyle(
@@ -202,7 +210,9 @@ class MainLayout extends StatelessWidget {
         child: TextButton(
           child: Icon(
             iconData,
-            color: Colors.grey.shade800,
+            color: context.read<KeyboardTheme>().darkMode
+                ? Colors.grey.shade400
+                : Colors.grey.shade800,
             size: 18,
           ),
           style: ButtonStyle(
@@ -219,14 +229,16 @@ class MainLayout extends StatelessWidget {
     final constraint = context.read<Constraint>();
     final inputStatus = context.read<InputStatus>();
 
-    return Container(
+    return SizedBox(
       height: constraint.height,
-      color: Colors.white,
       child: Column(
         children: [
           SizedBox(
             height: constraint.baseHeight,
             child: Material(
+              color: context.read<KeyboardTheme>().darkMode
+                  ? Colors.black
+                  : Colors.white,
               child: Observer(
                 builder: (_) {
                   return Row(

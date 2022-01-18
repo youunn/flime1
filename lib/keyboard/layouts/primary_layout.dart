@@ -1,5 +1,6 @@
 import 'package:flime/input/core/event/event.dart';
 import 'package:flime/input/schemas/commands.dart';
+import 'package:flime/keyboard/basic/highlights.dart';
 import 'package:flime/keyboard/basic/operations.dart';
 import 'package:flime/keyboard/basic/preset.dart';
 import 'package:flime/keyboard/router/router.gr.dart';
@@ -49,8 +50,8 @@ class PrimaryLayout extends StatelessWidget {
   //    z x c v \ ? /
   static final _preset = Preset(
     width: 0.1,
-    height: 60,
-    fontSize: 22,
+    height: 63,
+    fontSize: 26,
   )
     ..r(
       // 第一行
@@ -125,13 +126,23 @@ class PrimaryLayout extends StatelessWidget {
           composing: KEvent.click(LogicalKeyboardKey.digit3),
           width: 0.18,
         )
-        ..c(Lk.space, longClick: Ke.command(switchAsciiMode), width: 0.34)
+        ..c(
+          Lk.space,
+          longClick: Ke.command(switchAsciiMode),
+          width: 0.34,
+          highlight: Highlight.space,
+        )
         ..c(
           Lk.period,
           composing: KEvent.click(LogicalKeyboardKey.digit2),
           width: 0.14,
         )
-        ..c(Lk.enter, iconData: Icons.keyboard_return_outlined, width: 0.16),
-      height: 72,
+        ..c(
+          Lk.enter,
+          iconData: Icons.keyboard_return_outlined,
+          highlight: Highlight.enter,
+          width: 0.16,
+        ),
+      height: 75,
     );
 }
