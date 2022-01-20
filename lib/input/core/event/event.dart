@@ -14,8 +14,6 @@ class KEvent {
   final List<SingleActivator>? _chord;
   final CommandEvent? _command;
   final Operation? _operation;
-
-  // TODO: repeatable
   final bool _repeatable;
 
   KEvent._(

@@ -1,3 +1,4 @@
+import 'package:characters/characters.dart';
 import 'package:flime/input/core/engine.dart';
 import 'package:flime/input/core/event/event.dart';
 import 'package:flime/input/core/processors/pre_filter.dart';
@@ -25,8 +26,13 @@ class SymbolFilter extends PreFilter {
 
     if (event.type == EventType.click) {
       final v = _map[event.click.keyLabel];
-      if (v != null) {
-        await engine.context.commitDirectly(v);
+      if (v != null && v.isNotEmpty) {
+        if (v.length == 1) {
+          await engine.context.commitDirectly(v);
+        } else {
+          await engine.context.commitCurrent();
+          engine.context.candidates.addAll(v.characters);
+        }
         return PreFilterResult.finish;
       } else {
         return PreFilterResult.pass;
@@ -44,9 +50,8 @@ class SymbolFilter extends PreFilter {
     '?': '？',
     ';': '；',
     ':': '：',
-    // TODO: 成对引号
-    '\'': '’',
-    '"': '”',
+    '\'': '‘’',
+    '"': '“”',
     '\\': '、',
     '~': '～',
     '!': '！',
