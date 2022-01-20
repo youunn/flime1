@@ -28,6 +28,6 @@ class DefaultTableTranslator extends Translator {
 
   @override
   Future<List<String>> process(String input) async {
-    return (await _dictionary.getAll(input, 3)).map((e) => e.word).toList();
+    return (await _dictionary.getAll(input, 100)).map((e) => e.word).toList();
   }
 }

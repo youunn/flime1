@@ -78,7 +78,7 @@ class Dictionary {
           columns: [_codeColumn, _wordColumn, _indexColumn],
           where: '$_codeColumn like ? || \'%\'',
           whereArgs: [code],
-          limit: 100,
+          limit: count,
         ))
             ?.map(
               (e) => Entry(

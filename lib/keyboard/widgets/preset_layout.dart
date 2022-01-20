@@ -39,7 +39,7 @@ class PresetLayout extends StatelessWidget {
               child: Row(
                 children: [
                   for (var k in r)
-                    KeyInkwell(
+                    KeyInkWell(
                       k: k,
                       width: width,
                       onKey: onKey,

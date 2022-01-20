@@ -1,12 +1,5 @@
 include: package:flutter_lints/flutter.yaml
 
-analyzer:
-  exclude:
-    - pigeons/*.dart
-    - lib/api/api.dart
-    - lib/**.g.dart
-    - lib/**.gr.dart
-
 linter:
   rules:
     unnecessary_statements: true
@@ -23,7 +16,6 @@ linter:
     prefer_interpolation_to_compose_strings: true
     prefer_null_aware_method_calls: true
     prefer_single_quotes: true
-    require_trailing_commas: true
     sized_box_shrink_expand: true
     type_annotate_public_apis: true
     unawaited_futures: true

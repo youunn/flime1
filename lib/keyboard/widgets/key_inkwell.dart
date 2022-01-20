@@ -7,8 +7,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class KeyInkwell extends StatefulWidget {
-  const KeyInkwell({
+class KeyInkWell extends StatefulWidget {
+  const KeyInkWell({
     Key? key,
     required this.width,
     required this.k,
@@ -20,10 +20,10 @@ class KeyInkwell extends StatefulWidget {
   final void Function(KEvent event) onKey;
 
   @override
-  State<KeyInkwell> createState() => _KeyInkwellState();
+  State<KeyInkWell> createState() => _KeyInkWellState();
 }
 
-class _KeyInkwellState extends State<KeyInkwell> {
+class _KeyInkWellState extends State<KeyInkWell> {
   bool _isPressed = false;
 
   Widget _buildInner(BuildContext context, {required void Function() onTap}) {
