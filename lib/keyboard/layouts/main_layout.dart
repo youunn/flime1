@@ -144,7 +144,7 @@ class MainLayout extends StatelessWidget {
           iconData: Icons.keyboard_hide,
           darkMode: darkMode,
           onPressed: () {
-            // do nothing
+            scopedInputMethodApi.pick();
           },
         ),
       ),

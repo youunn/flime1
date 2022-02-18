@@ -1,12 +1,15 @@
 package im.nue.flime
 
+import android.content.Intent
 import android.inputmethodservice.InputMethodService
 import android.os.SystemClock
+import android.provider.Settings
 import android.view.InputDevice
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import io.flutter.FlutterInjector
 import io.flutter.embedding.android.FlutterView
@@ -22,7 +25,7 @@ class Flime : InputMethodService() {
         const val SHOW_KEYBOARD_ENTRY_POINT = "showKeyboard"
     }
 
-    class ContextApi(private val service: InputMethodService) : Pigeon.ContextApi {
+    inner class ContextApi(private val service: InputMethodService) : Pigeon.ContextApi {
 
         override fun commit(content: Pigeon.Content?): Boolean {
             content?.let {
@@ -77,6 +80,23 @@ class Flime : InputMethodService() {
         }
     }
 
+    inner class InputMethodApi : Pigeon.InputMethodApi {
+        override fun enable(): Boolean {
+            Intent().apply {
+                action = Settings.ACTION_INPUT_METHOD_SETTINGS
+                addCategory(Intent.CATEGORY_DEFAULT)
+                startActivity(this)
+            }
+            return true
+        }
+
+        override fun pick(): Boolean {
+            val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            manager.showInputMethodPicker()
+            return true
+        }
+    }
+
     override fun onCreateInputView(): View {
         rootView = LinearLayout(this)
 
@@ -90,6 +110,7 @@ class Flime : InputMethodService() {
         )
         engine.serviceControlSurface.attachToService(this, null, true)
         Pigeon.ContextApi.setup(engine.dartExecutor.binaryMessenger, ContextApi(this))
+        Pigeon.InputMethodApi.setup(engine.dartExecutor.binaryMessenger, InputMethodApi())
 
         flutterView = WrapFlutterView(engine, this)
         flutterView.attachToFlutterEngine(engine)

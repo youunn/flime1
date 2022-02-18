@@ -12,7 +12,7 @@ dependencies:
   auto_route: ^3.2.1
   cupertino_icons: ^1.0.2
   flutter: { sdk: flutter }
-  flutter_mobx: ^2.0.3+2
+  flutter_mobx: ^2.0.4
   mobx: ^2.0.6+1
   provider: ^6.0.1
   sqflite: ^2.0.2
