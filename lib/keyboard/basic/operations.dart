@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 
 enum Operation {
   switchLayout,
+  switchPrimaryLayout,
+  switchSecondaryLayout,
+  switchNumberLayout,
 }
 
 Future<void> switchLayout(BuildContext context, PageRouteInfo route) async {

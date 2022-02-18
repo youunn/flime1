@@ -2,7 +2,6 @@ import 'package:flime/input/core/event/event.dart';
 import 'package:flime/keyboard/basic/highlights.dart';
 import 'package:flime/keyboard/basic/operations.dart';
 import 'package:flime/keyboard/basic/preset.dart';
-import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flime/keyboard/widgets/preset_builder.dart';
 import 'package:flime/keyboard/widgets/preset_layout.dart';
 import 'package:flutter/material.dart';
@@ -22,18 +21,7 @@ class SecondaryLayout extends StatelessWidget {
         onKey: (event) => onKey(
           event,
           context,
-          onOperation: (operation) async {
-            switch (event.operation) {
-              case Operation.switchLayout:
-                await switchLayout(
-                  context,
-                  const PrimaryRoute(),
-                );
-                break;
-              default:
-                break;
-            }
-          },
+          onOperation: onDefaultOperation,
         ),
       ),
     );
@@ -100,7 +88,8 @@ class SecondaryLayout extends StatelessWidget {
       // 第四行
       (r) => r
         ..k(
-          Ke.operation(Operation.switchLayout),
+          Ke.operation(Operation.switchPrimaryLayout),
+          longClick: Ke.operation(Operation.switchNumberLayout),
           label: 'L1',
           iconData: Icons.pin_outlined,
           width: 0.18,

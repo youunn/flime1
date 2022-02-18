@@ -6,6 +6,7 @@ import 'package:flime/input/core/event/event_extension.dart';
 import 'package:flime/keyboard/api/apis.dart';
 import 'package:flime/keyboard/basic/operations.dart';
 import 'package:flime/keyboard/basic/preset.dart';
+import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flime/keyboard/services/input_service.dart';
 import 'package:flime/keyboard/stores/input_status.dart';
 import 'package:flime/keyboard/stores/theme.dart';
@@ -56,7 +57,7 @@ class PresetLayout extends StatelessWidget {
 Future<void> onKey(
   KEvent event,
   BuildContext context, {
-  Function(Operation operation)? onOperation,
+  Function(Operation operation, BuildContext context)? onOperation,
 }) async {
   final inputStatus = context.read<InputStatus>();
   final service = context.read<InputService>();
@@ -113,7 +114,32 @@ Future<void> onKey(
       }
       if (inputStatus.shifted) inputStatus.shifted = false;
     } else if (event.type == EventType.operation) {
-      onOperation?.call(event.operation);
+      onOperation?.call(event.operation, context);
     }
+  }
+}
+
+Future onDefaultOperation(Operation operation, BuildContext context) async {
+  switch (operation) {
+    case Operation.switchPrimaryLayout:
+      await switchLayout(
+        context,
+        const PrimaryRoute(),
+      );
+      break;
+    case Operation.switchSecondaryLayout:
+      await switchLayout(
+        context,
+        const SecondaryRoute(),
+      );
+      break;
+    case Operation.switchNumberLayout:
+      await switchLayout(
+        context,
+        const NumberRoute(),
+      );
+      break;
+    default:
+      break;
   }
 }

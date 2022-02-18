@@ -3,7 +3,6 @@ import 'package:flime/input/schemas/commands.dart';
 import 'package:flime/keyboard/basic/highlights.dart';
 import 'package:flime/keyboard/basic/operations.dart';
 import 'package:flime/keyboard/basic/preset.dart';
-import 'package:flime/keyboard/router/router.gr.dart';
 import 'package:flime/keyboard/widgets/preset_builder.dart';
 import 'package:flime/keyboard/widgets/preset_layout.dart';
 import 'package:flutter/material.dart';
@@ -24,18 +23,7 @@ class PrimaryLayout extends StatelessWidget {
         onKey: (event) => onKey(
           event,
           context,
-          onOperation: (operation) async {
-            switch (event.operation) {
-              case Operation.switchLayout:
-                await switchLayout(
-                  context,
-                  const SecondaryRoute(),
-                );
-                break;
-              default:
-                break;
-            }
-          },
+          onOperation: onDefaultOperation,
         ),
       ),
     );
@@ -116,7 +104,9 @@ class PrimaryLayout extends StatelessWidget {
       // 第四行
       (r) => r
         ..k(
-          Ke.operation(Operation.switchLayout),
+          Ke.operation(Operation.switchSecondaryLayout),
+          longClick: Ke.operation(Operation.switchNumberLayout),
+          composing: Ke.click(LogicalKeyboardKey.digit3),
           label: 'L2',
           // TODO: replace with onetwothree after flutter 2.10
           iconData: Icons.pin_outlined,
@@ -124,7 +114,7 @@ class PrimaryLayout extends StatelessWidget {
         )
         ..c(
           Lk.comma,
-          composing: Ke.click(LogicalKeyboardKey.digit3),
+          composing: Ke.click(LogicalKeyboardKey.digit2),
           width: 0.18,
         )
         ..c(
@@ -135,7 +125,7 @@ class PrimaryLayout extends StatelessWidget {
         )
         ..c(
           Lk.period,
-          composing: Ke.click(LogicalKeyboardKey.digit2),
+          composing: Ke.click(LogicalKeyboardKey.digit3),
           width: 0.14,
         )
         ..c(
