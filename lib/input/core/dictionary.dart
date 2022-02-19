@@ -92,6 +92,25 @@ class Dictionary {
 
     return results..sort(Entry.compare);
   }
+
+  Future<List<Entry>> query(String word) async {
+    final results = (await _database?.query(
+          _tableName,
+          columns: [_codeColumn, _wordColumn, _indexColumn],
+          where: '$_wordColumn = ?',
+          whereArgs: [word],
+        ))
+            ?.map(
+              (e) => Entry(
+                code: e[_codeColumn] as String,
+                word: e[_wordColumn] as String,
+                index: e[_indexColumn] as int,
+              ),
+            )
+            .toList() ??
+        [];
+    return results;
+  }
 }
 
 class Entry {

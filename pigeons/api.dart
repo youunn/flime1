@@ -17,8 +17,12 @@ abstract class InputMethodApi {
   bool pick();
 }
 
-
 @HostApi()
 abstract class LayoutApi {
   void setHeight(int height);
+}
+
+@HostApi()
+abstract class ProcessTextApi {
+  String getText();
 }
