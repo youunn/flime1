@@ -48,6 +48,7 @@ class ReverseLookupService : Service() {
     private var attached = false
 
     companion object {
+        const val LIBRARY_NAME = "package:flime/main.dart"
         const val SHOW_REVERSE_LOOKUP_ENTRY_POINT = "showReverseLookup"
     }
 
@@ -68,7 +69,8 @@ class ReverseLookupService : Service() {
         engine.dartExecutor.executeDartEntrypoint(
             DartExecutor.DartEntrypoint(
                 FlutterInjector.instance().flutterLoader().findAppBundlePath(),
-                SHOW_REVERSE_LOOKUP_ENTRY_POINT
+                LIBRARY_NAME,
+                SHOW_REVERSE_LOOKUP_ENTRY_POINT,
             )
         )
         engine.serviceControlSurface.attachToService(this, null, true)

@@ -52,7 +52,7 @@ class Engine {
         _context.candidates.addAll(await translator.process(_context.input));
       }
       for (final postFilter in _schema.postFilters) {
-        final filtered = postFilter.process(_context.candidates);
+        final filtered = await postFilter.process(_context.candidates, this);
         _context.candidates.clear();
         _context.candidates.addAll(filtered);
       }

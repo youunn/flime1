@@ -1,13 +1,22 @@
 import 'dart:io';
 
 import 'package:flime/api/api.dart';
+import 'package:flime/input/schemas/processors/post/opencc.dart';
 import 'package:flutter/material.dart';
 
-class SetupPage extends StatelessWidget {
-  SetupPage({Key? key}) : super(key: key);
+class SetupPage extends StatefulWidget {
+  const SetupPage({Key? key}) : super(key: key);
 
+  @override
+  State<SetupPage> createState() => _SetupPageState();
+}
+
+class _SetupPageState extends State<SetupPage> {
   final InputMethodApi? inputMethodApi =
       Platform.isAndroid ? InputMethodApi() : null;
+
+  final controller = TextEditingController();
+  String text = '';
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +27,18 @@ class SetupPage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Card(
+          Card(
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: '...',
               ),
+              controller: controller,
+              onChanged: (v) {
+                setState(() {
+                  text = v;
+                });
+              },
             ),
           ),
           SizedBox(
@@ -46,6 +61,18 @@ class SetupPage extends StatelessWidget {
                 }
               },
               child: const Text('Switch'),
+            ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () async {
+                final output = await NativeOpenCC().convert(text);
+                setState(() {
+                  controller.text = output;
+                });
+              },
+              child: const Text('Test'),
             ),
           ),
         ],

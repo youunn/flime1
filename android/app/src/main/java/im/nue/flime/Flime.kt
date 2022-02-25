@@ -22,6 +22,7 @@ class Flime : InputMethodService() {
     private lateinit var rootView: LinearLayout
 
     companion object {
+        const val LIBRARY_NAME = "package:flime/main.dart"
         const val SHOW_KEYBOARD_ENTRY_POINT = "showKeyboard"
     }
 
@@ -105,7 +106,8 @@ class Flime : InputMethodService() {
         engine.dartExecutor.executeDartEntrypoint(
             DartExecutor.DartEntrypoint(
                 FlutterInjector.instance().flutterLoader().findAppBundlePath(),
-                SHOW_KEYBOARD_ENTRY_POINT
+                LIBRARY_NAME,
+                SHOW_KEYBOARD_ENTRY_POINT,
             )
         )
         engine.serviceControlSurface.attachToService(this, null, true)
@@ -117,7 +119,7 @@ class Flime : InputMethodService() {
         rootView.addView(flutterView)
         flutterView.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
-            192, // any number greater than zero
+            650, // any number greater than zero
         )
 
         return rootView

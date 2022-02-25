@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(opencc_download NONE)
+
+option(BUILD_OFFLINE "Build offline" OFF)
+if(${BUILD_OFFLINE})
+    set_property(DIRECTORY
+            PROPERTY EP_UPDATE_DISCONNECTED 1)
+endif()
+
+include(ExternalProject)
+ExternalProject_Add(opencc
+        GIT_REPOSITORY    https://github.com/BYVoid/OpenCC.git
+        GIT_TAG           master
+        SOURCE_DIR        "${CMAKE_CURRENT_BINARY_DIR}/src"
+        BINARY_DIR        "${CMAKE_CURRENT_BINARY_DIR}/build"
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND     ""
+        INSTALL_COMMAND   ""
+        TEST_COMMAND      ""
+        )

@@ -1,3 +1,4 @@
+import 'package:flime/input/core/engine.dart';
 import 'package:flime/input/core/processors/post_filter.dart';
 
 class DeDupFilter extends PostFilter {
@@ -8,7 +9,6 @@ class DeDupFilter extends PostFilter {
   factory DeDupFilter() => _filter ??= DeDupFilter._();
 
   @override
-  List<String> process(List<String> candidates) {
-    return candidates.toSet().toList();
-  }
+  Future<List<String>> process(List<String> candidates, Engine engine) async =>
+      candidates.toSet().toList();
 }
