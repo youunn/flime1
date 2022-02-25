@@ -18,6 +18,18 @@ endif ()
 add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/src
         ${CMAKE_CURRENT_BINARY_DIR}/build EXCLUDE_FROM_ALL)
 
-set(OPENCC_HEADERS "${CMAKE_CURRENT_BINARY_DIR}/src/src" "${CMAKE_CURRENT_BINARY_DIR}/build/src")
+set(OPENCC_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/../../include")
+add_custom_target(copy_libopencc_headers ALL DEPENDS libopencc)
+add_custom_command(TARGET copy_libopencc_headers POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+        "${OPENCC_INCLUDE_DIR}/opencc"
+        COMMAND ${CMAKE_COMMAND} -E copy
+        "${CMAKE_CURRENT_BINARY_DIR}/build/src/*.h"
+        "${OPENCC_INCLUDE_DIR}/opencc"
+        COMMAND ${CMAKE_COMMAND} -E copy
+        "${CMAKE_CURRENT_BINARY_DIR}/src/src/*.hpp"
+        "${OPENCC_INCLUDE_DIR}/opencc"
+        )
+add_dependencies(convert copy_libopencc_headers)
 
-target_include_directories(convert PRIVATE ${OPENCC_HEADERS})
+target_include_directories(convert PRIVATE ${OPENCC_INCLUDE_DIR})

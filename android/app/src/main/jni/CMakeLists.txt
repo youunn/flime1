@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
+project(convert)
+
 add_library(convert SHARED native_convert.cpp)
 target_include_directories(convert PUBLIC ${CMAKE_SOURCE_DIR})
 
@@ -18,13 +20,13 @@ if (NOT ${CMAKE_HOST_SYSTEM_NAME} MATCHES "Windows")
             COMMAND ${CMAKE_COMMAND} -E make_directory
             ${CMAKE_SOURCE_DIR}/../../../../../assets/opencc
             COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_BINARY_DIR}/thirdparty/opencc/build/data/*.ocd2
+            ${CMAKE_BINARY_DIR}/thirdparty/src/opencc/build/data/*.ocd2
             ${CMAKE_SOURCE_DIR}/../../../../../assets/opencc
             COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_BINARY_DIR}/thirdparty/opencc/build/data/*.txt
+            ${CMAKE_BINARY_DIR}/thirdparty/src/opencc/build/data/*.txt
             ${CMAKE_SOURCE_DIR}/../../../../../assets/opencc
             COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_BINARY_DIR}/thirdparty/opencc/src/data/config/*.json
+            ${CMAKE_BINARY_DIR}/thirdparty/src/opencc/src/data/config/*.json
             ${CMAKE_SOURCE_DIR}/../../../../../assets/opencc
             )
 endif ()

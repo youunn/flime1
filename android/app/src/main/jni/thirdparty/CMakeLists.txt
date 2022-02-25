@@ -1,1 +1,1 @@
-add_subdirectory(opencc)
+add_subdirectory(src/opencc)

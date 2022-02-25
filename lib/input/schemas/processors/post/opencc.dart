@@ -9,6 +9,7 @@ import 'package:flime/input/core/processors/post_filter.dart';
 import 'package:flime/input/schemas/options.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:path_provider_android/path_provider_android.dart';
 
 class OpenCCFilter extends PostFilter {
@@ -44,9 +45,9 @@ class OpenCCFilter extends PostFilter {
 
   static Future<bool> loadAssets() async {
     if (!Platform.isAndroid) return false;
-    final parent = await PathProviderAndroid().getApplicationDocumentsPath();
-    if (parent == null) return false;
-    final outputPath = join(parent, 'opencc');
+    PathProviderAndroid.registerWith();
+    final parent = await getApplicationDocumentsDirectory();
+    final outputPath = join(parent.path, 'opencc');
     final s2hkPath = join(outputPath, 's2hk.json');
     final loaded = await File(s2hkPath).exists();
     if (loaded) return true;
@@ -77,8 +78,8 @@ class NativeOpenCC {
 
   NativeOpenCC._() {
     _convertConfig = ConvertConfig.s2hk;
-    _convertConfigPath = PathProviderAndroid().getApplicationDocumentsPath()
-        .then((d) => join(join(d!, 'opencc'), _configMap[_convertConfig]))
+    _convertConfigPath = getApplicationDocumentsDirectory()
+        .then((d) => join(join(d.path, 'opencc'), _configMap[_convertConfig]))
         .then((s) => s.toNativeUtf8());
   }
 
@@ -92,8 +93,8 @@ class NativeOpenCC {
 
   set convertConfig(ConvertConfig value) {
     _convertConfig = value;
-    _convertConfigPath = PathProviderAndroid().getApplicationDocumentsPath()
-        .then((d) => join(join(d!, 'opencc'), _configMap[_convertConfig]))
+    _convertConfigPath = getApplicationDocumentsDirectory()
+        .then((d) => join(join(d.path, 'opencc'), _configMap[_convertConfig]))
         .then((s) => s.toNativeUtf8());
   }
 
@@ -121,8 +122,7 @@ class NativeOpenCC {
         pointerPointer.cast(),
         inputs.length);
 
-    final result =
-        _toDartString(outputPointerPointer.cast(), inputs.length).toList();
+    final result = _toDartString(outputPointerPointer.cast()).toList();
 
     pointers.forEach(calloc.free);
     malloc
@@ -133,12 +133,11 @@ class NativeOpenCC {
   }
 
   Iterable<String> _toDartString(
-      Pointer<Pointer<Utf8>> charPointerPointer, int length) sync* {
-    for (var i = 0; i < length; i++) {
+      Pointer<Pointer<Utf8>> charPointerPointer) sync* {
+    if (charPointerPointer == nullptr) return;
+    for (var i = 0; i < 200; i++) {
       final charPointer = charPointerPointer[i];
-      if (charPointer == nullptr) {
-        break;
-      }
+      if (charPointer == nullptr) return;
       final s = charPointer.toDartString();
       yield s;
       malloc.free(charPointer);
