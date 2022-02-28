@@ -3,7 +3,8 @@ import 'package:flime/input/schemas/options.dart';
 
 typedef CommandEvent = Function(Engine);
 
-bool _switchMode<T extends Enum>(Engine e, List<T> values, String key, {bool reverse = false}) {
+bool _switchMode<T extends Enum>(Engine e, List<T> values, String key,
+    {bool reverse = false}) {
   final value = e.getOption(key);
   if (value == null) return false;
   final index = value.index;
@@ -33,4 +34,10 @@ void switchOpenCCOptionReverse(Engine e) {
   if (_switchMode(e, OpenCCOption.values, Options.opencc, reverse: true)) {
     e.context.clear();
   }
+}
+
+void resetOpenCCOption(Engine e) {
+  final value = e.getOption(Options.opencc);
+  if (value == null) return;
+  if (value != OpenCCOption.off) e.setOption(Options.opencc, OpenCCOption.off);
 }

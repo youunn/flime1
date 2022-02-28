@@ -192,9 +192,7 @@ class MainLayout extends StatelessWidget {
           iconData: Icons.more_horiz,
           darkMode: darkMode,
           onPressed: () {
-            context
-                .read<InputService>()
-                .onKey(KEvent.command(switchOpenCCOptionReverse));
+            context.read<InputService>().onKey(KEvent.command(switchAsciiMode));
           },
         ),
       ),
@@ -204,7 +202,9 @@ class MainLayout extends StatelessWidget {
           iconData: Icons.mic,
           darkMode: darkMode,
           onPressed: () {
-            context.read<InputService>().onKey(KEvent.command(switchAsciiMode));
+            context
+                .read<InputService>()
+                .onKey(KEvent.command(resetOpenCCOption));
           },
         ),
       ),
