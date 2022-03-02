@@ -26,10 +26,12 @@ class Preset extends Iterable<KeyboardRow> {
   void r(
     KeyboardRow Function(KeyboardRow) init, {
     double? height,
+    bool firstRow = false,
   }) {
     final row = KeyboardRow(
       height: height ?? this.height,
       preset: this,
+      firstRow: firstRow,
     );
     rows.add(init(row));
   }
@@ -39,8 +41,10 @@ class KeyboardRow extends Iterable<K> {
   final double height;
   final Preset preset;
   final keys = <K>[];
+  final bool firstRow;
 
-  KeyboardRow({required this.height, required this.preset})
+  KeyboardRow(
+      {required this.height, required this.preset, this.firstRow = false})
       : assert(height >= 0);
 
   @override
@@ -72,6 +76,7 @@ class KeyboardRow extends Iterable<K> {
       iconData: iconData,
       highlight: highlight,
       repeatable: repeatable,
+      firstRow: firstRow,
     );
     keys.add(key);
   }
@@ -102,6 +107,7 @@ class KeyboardRow extends Iterable<K> {
       iconData: iconData,
       highlight: highlight,
       repeatable: repeatable,
+      firstRow: firstRow,
     );
     keys.add(key);
   }

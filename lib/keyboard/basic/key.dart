@@ -22,6 +22,7 @@ class K {
   final IconData? iconData;
   final Highlight? highlight;
   final bool repeatable;
+  final bool firstRow;
 
   K({
     required this.height,
@@ -36,6 +37,7 @@ class K {
     this.ascii,
     this.composing,
     this.repeatable = false,
+    this.firstRow = false,
   })  : assert(width >= 0 && width <= 1),
         assert(height >= 0),
         assert(longClick == null || repeatable == false) {

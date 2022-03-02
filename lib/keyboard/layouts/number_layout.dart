@@ -39,6 +39,7 @@ class NumberLayout extends StatelessWidget {
         ..c(Lk.digit2)
         ..c(Lk.digit3)
         ..c(Lk.slash, width: 0.16),
+      firstRow: true,
     )
     ..r(
       (r) => r

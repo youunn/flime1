@@ -119,7 +119,7 @@ class Flime : InputMethodService() {
         rootView.addView(flutterView)
         flutterView.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
-            650, // any number greater than zero
+            760, // any number greater than zero
         )
 
         return rootView

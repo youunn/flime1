@@ -30,12 +30,14 @@ class PresetLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Material(
+      clipBehavior: Clip.none,
       color:
           context.read<KeyboardTheme>().darkMode ? Colors.black : Colors.white,
       child: Column(
         children: [
           for (var r in preset)
-            SizedBox(
+            Container(
+              clipBehavior: Clip.none,
               height: r.height,
               child: Row(
                 children: [

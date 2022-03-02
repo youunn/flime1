@@ -49,6 +49,7 @@ class SecondaryLayout extends StatelessWidget {
         ..c(Lk.asterisk)
         ..c(Lk.parenthesisLeft)
         ..c(Lk.parenthesisRight),
+      firstRow: true,
     )
     ..r(
       // 第二行

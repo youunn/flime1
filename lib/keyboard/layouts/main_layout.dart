@@ -243,7 +243,8 @@ class MainLayout extends StatelessWidget {
     final constraint = context.read<Constraint>();
     final inputStatus = context.read<InputStatus>();
 
-    return SizedBox(
+    return Container(
+      clipBehavior: Clip.none,
       height: constraint.height,
       child: Column(
         children: [

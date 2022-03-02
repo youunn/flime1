@@ -55,6 +55,7 @@ class PrimaryLayout extends StatelessWidget {
         ..c(Lk.keyI, longClick: Ke.click(Lk.digit8))
         ..c(Lk.keyO, longClick: Ke.click(Lk.digit9))
         ..c(Lk.keyP, longClick: Ke.click(Lk.digit0)),
+      firstRow: true,
     )
     ..r(
       // 第二行

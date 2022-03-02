@@ -22,8 +22,10 @@ class PresetBuilder extends StatelessWidget {
         });
 
         return Container(
+          clipBehavior: Clip.none,
           key: boxKey,
           child: SingleChildScrollView(
+            clipBehavior: Clip.none,
             child: child,
           ),
         );
