@@ -34,16 +34,28 @@ class NumberLayout extends StatelessWidget {
   )
     ..r(
       (r) => r
-        ..c(Lk.add, width: 0.15)
+        ..c(
+          Lk.add,
+          longClick: Ke.click(Lk.at),
+          width: 0.15,
+        )
         ..c(Lk.digit1)
         ..c(Lk.digit2)
         ..c(Lk.digit3)
-        ..c(Lk.slash, width: 0.16),
+        ..c(
+          Lk.slash,
+          longClick: Ke.click(Lk.colon),
+          width: 0.16,
+        ),
       firstRow: true,
     )
     ..r(
       (r) => r
-        ..c(Lk.minus, width: 0.15)
+        ..c(
+          Lk.minus,
+          longClick: Ke.click(Lk.percent),
+          width: 0.15,
+        )
         ..c(Lk.digit4)
         ..c(Lk.digit5)
         ..c(Lk.digit6)
@@ -57,7 +69,11 @@ class NumberLayout extends StatelessWidget {
     )
     ..r(
       (r) => r
-        ..c(Lk.asterisk, width: 0.15)
+        ..c(
+          Lk.asterisk,
+          longClick: Ke.click(Lk.numberSign),
+          width: 0.15,
+        )
         ..c(Lk.digit7)
         ..c(Lk.digit8)
         ..c(Lk.digit9)
@@ -83,7 +99,10 @@ class NumberLayout extends StatelessWidget {
           iconData: Icons.skip_next_outlined,
         )
         ..c(Lk.digit0)
-        ..c(Lk.equal)
+        ..c(
+          Lk.period,
+          longClick: Ke.click(Lk.equal),
+        )
         ..c(
           Lk.enter,
           iconData: Icons.keyboard_return_outlined,
