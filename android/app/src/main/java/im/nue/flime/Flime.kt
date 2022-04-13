@@ -38,7 +38,12 @@ class Flime : InputMethodService() {
 
         override fun send(keyLabel: String?): Boolean {
             if (keyLabel == null) return false
-            KeycodeMap[keyLabel]?.also { service.sendDownUpKeyEvents(it) } ?: return false
+            KeycodeMap[keyLabel]?.also {
+                if (it == KeyEvent.KEYCODE_ENTER)
+                    service.sendKeyChar('\n')
+                else
+                    service.sendDownUpKeyEvents(it)
+            } ?: return false
             return true
         }
 
@@ -144,9 +149,5 @@ class Flime : InputMethodService() {
             lifecycleChannel.appIsDetached()
             destroy()
         }
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        return super.onKeyDown(keyCode, event)
     }
 }
