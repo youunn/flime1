@@ -28,16 +28,13 @@ class Flime : InputMethodService() {
 
     inner class ContextApi(private val service: InputMethodService) : Pigeon.ContextApi {
 
-        override fun commit(content: Pigeon.Content?): Boolean {
-            content?.let {
-                service.currentInputConnection.commitText(content.text, 1)
-            }
+        override fun commit(content: Pigeon.Content): Boolean {
+            service.currentInputConnection.commitText(content.text, 1)
 
-            return content != null
+            return true
         }
 
-        override fun send(keyLabel: String?): Boolean {
-            if (keyLabel == null) return false
+        override fun send(keyLabel: String): Boolean {
             KeycodeMap[keyLabel]?.also {
                 if (it == KeyEvent.KEYCODE_ENTER)
                     service.sendKeyChar('\n')
@@ -47,8 +44,7 @@ class Flime : InputMethodService() {
             return true
         }
 
-        override fun sendShortcut(keyLabel: String?, modifier: Long?): Boolean {
-            if (keyLabel == null || modifier == null) return false
+        override fun sendShortcut(keyLabel: String, modifier: Long): Boolean {
             val code = KeycodeMap[keyLabel] ?: return false
 
             val metaState = KeycodeMap.getMetaState(modifier.toInt())

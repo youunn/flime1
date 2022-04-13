@@ -25,7 +25,7 @@ dev_dependencies:
   flutter_lints: ^1.0.0
   flutter_test: { sdk: flutter }
   mobx_codegen: ^2.0.4
-  pigeon: ^1.0.14
+  pigeon: ^2.0.3
   sqflite_common_ffi: ^2.1.0
 
 flutter:
@@ -45,4 +45,4 @@ ffigen:
       - '.*'
   headers:
     entry-points:
-      - './android/app/src/main/jni/native_convert.cpp'
+      - './android/app/src/main/jni/native_convert.h'

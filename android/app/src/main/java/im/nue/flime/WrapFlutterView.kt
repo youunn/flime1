@@ -15,11 +15,9 @@ class WrapFlutterView(engine: FlutterEngine, context: Context) :
     }
 
     inner class LayoutApi : Pigeon.LayoutApi {
-        override fun setHeight(h: Long?) {
-            h?.toInt()?.let {
-                this@WrapFlutterView.updateLayoutParams { height = it }
-                requestLayout()
-            }
+        override fun setHeight(h: Long) {
+            this@WrapFlutterView.updateLayoutParams { height = h.toInt() }
+            requestLayout()
         }
     }
 }

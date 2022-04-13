@@ -28,10 +28,8 @@ class AppRouter extends _i4.RootStackRouter {
           routeData: routeData, child: const _i1.HomePage());
     },
     SetupRoute.name: (routeData) {
-      final args = routeData.argsAs<SetupRouteArgs>(
-          orElse: () => const SetupRouteArgs());
       return _i4.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i2.SetupPage(key: args.key));
+          routeData: routeData, child: const _i2.SetupPage());
     },
     InputRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(
@@ -57,22 +55,10 @@ class HomeRoute extends _i4.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.SetupPage]
-class SetupRoute extends _i4.PageRouteInfo<SetupRouteArgs> {
-  SetupRoute({_i5.Key? key})
-      : super(SetupRoute.name, path: '/setup', args: SetupRouteArgs(key: key));
+class SetupRoute extends _i4.PageRouteInfo<void> {
+  const SetupRoute() : super(SetupRoute.name, path: '/setup');
 
   static const String name = 'SetupRoute';
-}
-
-class SetupRouteArgs {
-  const SetupRouteArgs({this.key});
-
-  final _i5.Key? key;
-
-  @override
-  String toString() {
-    return 'SetupRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for

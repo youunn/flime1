@@ -3,4 +3,4 @@
 cd "$(dirname "$0")" || exit
 cd ..
 mkdir -p ./lib/api
-dart run ffigen
+flutter pub run ffigen
